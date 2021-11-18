@@ -9,10 +9,13 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
@@ -30,13 +33,25 @@ int X,Y;
 	    shell.setText("PicSheepEditor");
 	    shell.setLayout(new FillLayout());
 
-	    Canvas canvas = new Canvas(shell, SWT.NONE);
+	    GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 1;
+        shell.setLayout(gridLayout);
+	    
+        Group outerGroup = new Group(shell, SWT.NONE);
 
+        // Tell the group to stretch in all directions
+        outerGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        outerGroup.setLayout(new GridLayout(1, true));
+        outerGroup.setText("Image");
+
+        
+	    Canvas canvas = new Canvas(outerGroup, SWT.NONE);
+	    canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	    canvas.addPaintListener((PaintListener) new PaintListener() {
 	      public void paintControl(PaintEvent e) {
-	        image = new Image(display, "DATEINAME");
+	       // image = new Image(display, "DATEINAME");
 
-	        e.gc.drawImage(image, 10, 10);
+	        //e.gc.drawImage(image, 10, 10);
 
 	       
 	  
@@ -47,10 +62,12 @@ int X,Y;
 		      public void paintControl(PaintEvent e) {
 		     
 
-		        Rectangle bounds = image.getBounds();
-		        e.gc.drawLine(0,0,bounds.width,bounds.height);
-		        e.gc.drawLine(0,bounds.height,bounds.width,0);
-		  
+		        //Rectangle bounds = image.getBounds();
+		        //e.gc.drawLine(0,0,bounds.width,bounds.height);
+		        //e.gc.drawLine(0,bounds.height,bounds.width,0);
+		        
+		    	  e.gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
+		          e.gc.fillRectangle(0, 0, 400, 200);
 		      }
 		    });
 	    
@@ -130,7 +147,7 @@ int X,Y;
 	        };
 	    canvas.addListener(SWT.MouseDown, listenerDown);
 	    canvas.addListener(SWT.MouseMove, listenerMove);
-	    
+	    canvas.pack();
 	    final Button button = new Button(shell, SWT.PUSH);
 	    button.setText("Bleistift");
 	    
@@ -172,7 +189,7 @@ int X,Y;
 
 	       
 	      });
-	    
+	    shell.pack();
 	    shell.open();
 	    while (!shell.isDisposed()) {
 	      if (!display.readAndDispatch()) {
