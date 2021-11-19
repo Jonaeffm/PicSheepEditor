@@ -33,7 +33,7 @@ PictureSettings ps;
 	  
 Canvas canvas ;
 	  Display display;
-	  
+	   Group outerGroup;
 	  Shell shell;
 	  
  public void displayIt(){
@@ -48,7 +48,7 @@ Canvas canvas ;
         gridLayout.numColumns = 1;
         shell.setLayout(gridLayout);
 	    
-        Group outerGroup = new Group(shell, SWT.NONE);
+        outerGroup = new Group(shell, SWT.NONE);
 
         // Tell the group to stretch in all directions
         outerGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -273,19 +273,10 @@ class MenuItemListener extends SelectionAdapter {
 	  NewDialog nd = new NewDialog();
 	  ps = nd.show(display);
 	  
-	  canvas.addPaintListener((PaintListener) new PaintListener() {
-	      public void paintControl(PaintEvent e) {
-	     
-
-	        //Rectangle bounds = image.getBounds();
-	        //e.gc.drawLine(0,0,bounds.width,bounds.height);
-	        //e.gc.drawLine(0,bounds.height,bounds.width,0);
-	        
-	    	  e.gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
-	          e.gc.fillRectangle(0, 0, ps.getX(), ps.getY());
-	      }
-	    });
-	  
+	  GC gc = new GC(outerGroup);
+	  gc.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+	   gc.fillRectangle(0, 0, ps.getX(),ps.getY());
+	   gc.dispose(); 	  
 	  }
 	 }
 	  }
