@@ -29,9 +29,9 @@ int X,Y;
 	Boolean bleistift = false;
 	Boolean viereck = false;
 	
-
+PictureSettings ps;
 	  
-	
+Canvas canvas ;
 	  Display display;
 	  
 	  Shell shell;
@@ -56,7 +56,7 @@ int X,Y;
         outerGroup.setText("Image");
 
         
-	    Canvas canvas = new Canvas(outerGroup, SWT.NONE);
+	    canvas = new Canvas(outerGroup, SWT.NONE);
 	    canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	    canvas.addPaintListener((PaintListener) new PaintListener() {
 	      public void paintControl(PaintEvent e) {
@@ -271,7 +271,21 @@ class MenuItemListener extends SelectionAdapter {
 	  public void widgetSelected(SelectionEvent event) {
 	  if (((MenuItem) event.widget).getText().equals("New")) {
 	  NewDialog nd = new NewDialog();
-	  nd.show(display);
+	  ps = nd.show(display);
+	  
+	  canvas.addPaintListener((PaintListener) new PaintListener() {
+	      public void paintControl(PaintEvent e) {
+	     
+
+	        //Rectangle bounds = image.getBounds();
+	        //e.gc.drawLine(0,0,bounds.width,bounds.height);
+	        //e.gc.drawLine(0,bounds.height,bounds.width,0);
+	        
+	    	  e.gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
+	          e.gc.fillRectangle(0, 0, ps.getX(), ps.getY());
+	      }
+	    });
+	  
 	  }
 	 }
 	  }
