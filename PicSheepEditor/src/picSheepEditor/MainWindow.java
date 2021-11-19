@@ -40,7 +40,10 @@ Canvas canvas ;
 	  display = new Display();
 	    shell = new Shell(display);
 	    
-	   
+	    ps = new PictureSettings();
+	    ps.setX(400);
+	    ps.setY(200);
+	    
 	    shell.setText("PicSheepEditor");
 	    shell.setLayout(new FillLayout());
 
@@ -89,7 +92,9 @@ Canvas canvas ;
 	         
 	        	   System.out.println("Down");
 	        	   int xk,xg,yk,yg;
-	            mouse = !mouse;
+	            
+	            if(ps.getX()>event.x&&ps.getY()>event.y) {
+	        	mouse = !mouse;
 	          
 	            if(!mouse&&viereck)
 	            {
@@ -127,8 +132,8 @@ Canvas canvas ;
 		            
 		            
 	            }
-	            
-	        }
+	            }}
+	        
 	      };
 	    
 	      Listener listenerMove = new Listener() {
@@ -138,7 +143,7 @@ Canvas canvas ;
 	              /*if ((event.stateMask & SWT.BUTTON1) == 0)
 	                break;*/
 	        	   System.out.println("Move");
-	        	  
+	        	   if(ps.getX()>event.x&&ps.getY()>event.y) {
 	        	   if(!mouse&&bleistift)
 	        	   {
 	        		   X = event.x;
@@ -153,7 +158,7 @@ Canvas canvas ;
 	               X = event.x;
 		            Y = event.y;
 	        	   }
-	        	   
+	        	   }
 	          }
 	        };
 	    canvas.addListener(SWT.MouseDown, listenerDown);
