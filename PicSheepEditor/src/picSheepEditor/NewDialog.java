@@ -3,6 +3,7 @@ package picSheepEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -20,7 +21,7 @@ public class NewDialog {
 	{	//Display display1 = new Display();
     Shell shell = new Shell(display1);
     shell.setText("My First SWT GUI");
-    shell.setSize(200, 100);
+    shell.setSize(500, 100);
 
     GridLayout gridLayout = new GridLayout();
     gridLayout.numColumns = 2;
@@ -64,6 +65,7 @@ public class NewDialog {
     	  ps = new PictureSettings();
           ps.setX(Integer.parseInt(widthText.getText()));
           ps.setY(Integer.parseInt(hightText.getText()));
+          ps.setColor(new Color(0,0,0));
           shell.dispose();
       }
     });

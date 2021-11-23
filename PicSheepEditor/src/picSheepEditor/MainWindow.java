@@ -7,8 +7,10 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -17,6 +19,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.ColorDialog;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
@@ -47,7 +50,7 @@ Canvas canvas ;
 	    ps = new PictureSettings();
 	    ps.setX(400);
 	    ps.setY(200);
-	    
+	    ps.setColor(new Color(0,0,0));
 	    shell.setText("PicSheepEditor");
 	    shell.setLayout(new FillLayout());
 
@@ -294,7 +297,7 @@ Canvas canvas ;
 	    shell.setMenuBar(menu);
 	    
 	    newItem.addSelectionListener(new MenuItemListener());
-	    
+	    saveItem.addSelectionListener(new MenuItemListener());
 	   
 	    
 	    shell.pack();
@@ -308,6 +311,7 @@ Canvas canvas ;
 }
  
 
+ 
 class MenuItemListener extends SelectionAdapter {
 	  public void widgetSelected(SelectionEvent event) {
 	  if (((MenuItem) event.widget).getText().equals("New")) {
@@ -318,6 +322,21 @@ class MenuItemListener extends SelectionAdapter {
 	  gc.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 	   gc.fillRectangle(0, 0, ps.getX(),ps.getY());
 	   gc.dispose(); 	  
+	  }
+	  else if (((MenuItem) event.widget).getText().equals("Save")) {
+		  System.out.println("save");
+		  Image drawable = new Image(display, canvas.getBounds());
+			GC gc = new GC(drawable);
+			canvas.print(gc);
+			ImageLoader loader = new ImageLoader();
+			loader.data = new org.eclipse.swt.graphics.ImageData[] {drawable.getImageData()};
+			loader.save("/home/jon/Bilder/swt.png", SWT.IMAGE_PNG);
+			drawable.dispose();
+			gc.dispose();
+
+
+
+		  
 	  }
 	 }
 	  }
