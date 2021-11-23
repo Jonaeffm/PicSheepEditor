@@ -6,14 +6,17 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
@@ -39,6 +42,7 @@ Canvas canvas ;
  public void displayIt(){
 	  display = new Display();
 	    shell = new Shell(display);
+	    
 	    
 	    ps = new PictureSettings();
 	    ps.setX(400);
@@ -124,7 +128,8 @@ Canvas canvas ;
         			   yk=event.y;
         			   yg=Y;
         		   }	
-        		   GC gc = new GC(shell);
+        		   GC gc = new GC(canvas);
+        		   gc.setForeground( new Color( ps.getColor().getRGB() ) );
         		   gc.drawRectangle(xk, yk, xg-xk,yg-yk);
         		   gc.dispose(); 
 	            	
@@ -152,7 +157,8 @@ Canvas canvas ;
 	        	   if(mouse&&bleistift)
 	        	   	{
 	        		  
-	        		   GC gc = new GC(shell);
+	        		   GC gc = new GC(canvas);
+	        		   gc.setForeground( new Color( ps.getColor().getRGB() ) );
 	        		   gc.drawLine(X, Y, event.x,event.y);
 	        		   gc.dispose(); 
 	               X = event.x;
@@ -195,6 +201,36 @@ Canvas canvas ;
 				// TODO Auto-generated method stub
 				System.out.println("Bleistift");
 				viereck = !viereck;
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+	       
+	      });
+	    
+	    final Button buttonColor = new Button(shell, SWT.PUSH);
+	    buttonColor.setText("Color");
+	    
+	    buttonColor.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				ColorDialog dlg = new ColorDialog(shell);
+			    dlg.setRGB(new RGB(0, 0, 255));
+			    RGB rgb = dlg.open();
+			    if (rgb != null) {
+			      Color color = new Color(shell.getDisplay(), rgb);
+			      System.out.println(color.getRGB());
+			      //--------------------------------------
+			      ps.setColor(color);
+			      //color.dispose();
+			    }
+
 			}
 
 			@Override

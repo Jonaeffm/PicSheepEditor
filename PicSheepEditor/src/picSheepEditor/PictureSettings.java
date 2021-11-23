@@ -1,7 +1,10 @@
 package picSheepEditor;
 
+import org.eclipse.swt.graphics.Color;
+
 public class PictureSettings {
 	private int x,y;
+	private Color color;
 
 	public int getX() {
 		return x;
@@ -17,6 +20,14 @@ public class PictureSettings {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
 }
