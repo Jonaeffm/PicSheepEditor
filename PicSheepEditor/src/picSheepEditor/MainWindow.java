@@ -41,7 +41,29 @@ Canvas canvas ;
 	  Display display;
 	   Group outerGroup;
 	  Shell shell;
-	  
+	 
+public void drawLineImage(Event event) {
+	 canvas.addPaintListener(new PaintListener() { 
+		    public void paintControl(PaintEvent e) { 
+		    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
+  		   e.gc.drawLine(X, Y, event.x,event.y);
+		    }
+		});
+}
+
+public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
+	 canvas.addPaintListener(new PaintListener() { 
+		    public void paintControl(PaintEvent e) { 
+		    	canvas.addPaintListener(new PaintListener() { 
+    			    public void paintControl(PaintEvent e) { 
+    			    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
+    	        		   e.gc.drawRectangle(xk, yk, xg-xk,yg-yk);
+    			    }
+    			});
+		    }
+		});
+}
+
  public void displayIt(){
 	  display = new Display();
 	    shell = new Shell(display);
@@ -89,6 +111,7 @@ Canvas canvas ;
 		        
 		    	  e.gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
 		          e.gc.fillRectangle(0, 0, 400, 200);
+		         
 		      }
 		    });
 	    
@@ -131,10 +154,10 @@ Canvas canvas ;
         			   yk=event.y;
         			   yg=Y;
         		   }	
-        		   GC gc = new GC(canvas);
-        		   gc.setForeground( new Color( ps.getColor().getRGB() ) );
-        		   gc.drawRectangle(xk, yk, xg-xk,yg-yk);
-        		   gc.dispose(); 
+        		   drawRectangleImage(event,xg,xk,yg,yk);
+        		  // GC gc = new GC(canvas);
+        		   
+        		   //gc.dispose(); 
 	            	
 	            		
 		            
@@ -159,11 +182,11 @@ Canvas canvas ;
 	        	   }
 	        	   if(mouse&&bleistift)
 	        	   	{
-	        		  
-	        		   GC gc = new GC(canvas);
+	        		  drawLineImage(event);
+	        		  /* GC gc = new GC(canvas);
 	        		   gc.setForeground( new Color( ps.getColor().getRGB() ) );
 	        		   gc.drawLine(X, Y, event.x,event.y);
-	        		   gc.dispose(); 
+	        		   gc.dispose(); */
 	               X = event.x;
 		            Y = event.y;
 	        	   }
