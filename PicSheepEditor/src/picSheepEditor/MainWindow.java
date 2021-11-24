@@ -56,6 +56,18 @@ Canvas canvas ;
 
 	  }
 	  
+	  public void drawImage(Image i)
+	  {
+		  canvas.addPaintListener(new PaintListener() { 
+			    public void paintControl(PaintEvent e) { 
+			    	
+			    	e.gc.drawImage(i, 0, 0);
+			    	
+			    	
+			    }
+			});
+		 canvas.redraw();
+	  }
 public void drawLineImage(Event event) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
@@ -64,9 +76,7 @@ public void drawLineImage(Event event) {
 		    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
 		    	 
 		    	e.gc.drawLine(X, Y, event.x,event.y);
-		    	save();
-		    	Image image = new Image(display,"/home/jon/Bilder/swt.png");
-		    	//e.gc.drawImage(image, 0, 0);
+		    	
 		    }
 		});
 	 canvas.redraw();
@@ -264,6 +274,8 @@ canvas.redraw();
 	        	   	{
 	        		
 	        		   drawLineImage(event);
+	        		   
+	   		    	//gc.drawImage(image, 0, 0);
 	        		  /* GC gc = new GC(canvas);
 	        		   gc.setForeground( new Color( ps.getColor().getRGB() ) );
 	        		   gc.drawLine(X, Y, event.x,event.y);
@@ -349,6 +361,10 @@ canvas.redraw();
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
+				
+				save();
+   		    	
+				
 				ColorDialog dlg = new ColorDialog(shell);
 			    dlg.setRGB(new RGB(0, 0, 255));
 			    RGB rgb = dlg.open();
@@ -359,7 +375,10 @@ canvas.redraw();
 			      ps.setColor(color);
 			      //color.dispose();
 			    }
-
+			    
+			    Image image = new Image(display,"/home/jon/Bilder/swt.png");
+	   		    
+   		    	drawImage(image);
 			}
 
 			@Override
