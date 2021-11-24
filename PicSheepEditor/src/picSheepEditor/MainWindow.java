@@ -1,6 +1,7 @@
 package picSheepEditor;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -42,12 +43,30 @@ Canvas canvas ;
 	   Group outerGroup,outerGroup2;
 	  Shell shell;
 	 
+	  public void save()
+	  {
+		  Image drawable = new Image(display, canvas.getBounds());
+			GC gc = new GC(drawable);
+			canvas.print(gc);
+			ImageLoader loader = new ImageLoader();
+			loader.data = new org.eclipse.swt.graphics.ImageData[] {drawable.getImageData()};
+			loader.save("/home/jon/Bilder/swt.png", SWT.IMAGE_PNG);
+			drawable.dispose();
+			gc.dispose();
+
+	  }
+	  
 public void drawLineImage(Event event) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
+		    	
+		    
 		    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
-  		   e.gc.drawLine(X, Y, event.x,event.y);
-  		   
+		    	 
+		    	e.gc.drawLine(X, Y, event.x,event.y);
+		    	save();
+		    	Image image = new Image(display,"/home/jon/Bilder/swt.png");
+		    	//e.gc.drawImage(image, 0, 0);
 		    }
 		});
 	 canvas.redraw();
@@ -56,10 +75,10 @@ public void drawLineImage(Event event) {
 public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
-		    	
-    			    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
+		    		Color c =  new Color( ps.getColor().getRGB() );
+    			    	e.gc.setForeground( c );
     	        		   e.gc.drawRectangle(xk, yk, xg-xk,yg-yk);
-    			
+    	     
 		    }
 		});
 
@@ -432,14 +451,15 @@ class MenuItemListener extends SelectionAdapter {
 	  }
 	  else if (((MenuItem) event.widget).getText().equals("Save")) {
 		  System.out.println("save");
-		  Image drawable = new Image(display, canvas.getBounds());
+		  /*Image drawable = new Image(display, canvas.getBounds());
 			GC gc = new GC(drawable);
 			canvas.print(gc);
 			ImageLoader loader = new ImageLoader();
 			loader.data = new org.eclipse.swt.graphics.ImageData[] {drawable.getImageData()};
 			loader.save("/home/jon/Bilder/swt.png", SWT.IMAGE_PNG);
 			drawable.dispose();
-			gc.dispose();
+			gc.dispose();*/
+		  save();
 
 
 
