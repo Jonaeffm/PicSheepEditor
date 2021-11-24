@@ -47,21 +47,23 @@ public void drawLineImage(Event event) {
 		    public void paintControl(PaintEvent e) { 
 		    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
   		   e.gc.drawLine(X, Y, event.x,event.y);
+  		   e.gc.dispose();
 		    }
 		});
+	 canvas.redraw();
 }
 
 public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
-		    	canvas.addPaintListener(new PaintListener() { 
-    			    public void paintControl(PaintEvent e) { 
+		    	
     			    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
     	        		   e.gc.drawRectangle(xk, yk, xg-xk,yg-yk);
-    			    }
-    			});
+    			
 		    }
 		});
+
+canvas.redraw();
 }
 
  public void displayIt(){
@@ -182,13 +184,14 @@ public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 	        	   }
 	        	   if(mouse&&bleistift)
 	        	   	{
-	        		  drawLineImage(event);
+	        		
+	        		   drawLineImage(event);
 	        		  /* GC gc = new GC(canvas);
 	        		   gc.setForeground( new Color( ps.getColor().getRGB() ) );
 	        		   gc.drawLine(X, Y, event.x,event.y);
 	        		   gc.dispose(); */
-	               X = event.x;
-		            Y = event.y;
+	        		   X = event.x;
+			            Y = event.y;
 	        	   }
 	        	   }
 	          }
