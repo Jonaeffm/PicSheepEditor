@@ -34,12 +34,12 @@ int X,Y;
 	Boolean mouse=false;
 	Boolean bleistift = false;
 	Boolean viereck = false;
-	
+	Boolean kreis = false;
 PictureSettings ps;
 	  
 Canvas canvas ;
 	  Display display;
-	   Group outerGroup;
+	   Group outerGroup,outerGroup2;
 	  Shell shell;
 	 
 public void drawLineImage(Event event) {
@@ -47,7 +47,7 @@ public void drawLineImage(Event event) {
 		    public void paintControl(PaintEvent e) { 
 		    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
   		   e.gc.drawLine(X, Y, event.x,event.y);
-  		   e.gc.dispose();
+  		   
 		    }
 		});
 	 canvas.redraw();
@@ -65,6 +65,20 @@ public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 
 canvas.redraw();
 }
+
+public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
+	 canvas.addPaintListener(new PaintListener() { 
+		    public void paintControl(PaintEvent e) { 
+		    	
+   			    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
+   	        		   e.gc.drawOval(xk, yk, xg-xk,yg-yk);
+   			
+		    }
+		});
+
+canvas.redraw();
+}
+
 
  public void displayIt(){
 	  display = new Display();
@@ -88,6 +102,13 @@ canvas.redraw();
         outerGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         outerGroup.setLayout(new GridLayout(1, true));
         outerGroup.setText("Image");
+
+        outerGroup2 = new Group(shell, SWT.NONE);
+
+        // Tell the group to stretch in all directions
+        outerGroup2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        outerGroup2.setLayout(new GridLayout(10, true));
+        outerGroup2.setText("Tools");
 
         
 	    canvas = new Canvas(outerGroup, SWT.NONE);
@@ -165,6 +186,44 @@ canvas.redraw();
 		            
 		            
 	            }
+	            if(!mouse&&kreis)
+	            {
+	            	X = event.x;
+		            Y = event.y;
+	            
+	            }
+	            if(mouse&&kreis)
+	            {
+	         	   if(X<event.x)
+        		   {
+        			   xk=X;
+        			   xg=event.x;
+        		   }
+        		   else
+        		   {
+        			   xk=event.x;
+        			   xg=X;
+        		   }
+        		   if(Y<event.y)
+        		   {
+        			   yk=Y;
+        			   yg=event.y;
+        		   }
+        		   else
+        		   {
+        			   yk=event.y;
+        			   yg=Y;
+        		   }	
+        		   drawCircleImage(event,xg,xk,yg,yk);
+        		  // GC gc = new GC(canvas);
+        		   
+        		   //gc.dispose(); 
+	            	
+	            		
+		            
+		            
+	            }
+	            
 	            }}
 	        
 	      };
@@ -199,15 +258,15 @@ canvas.redraw();
 	    canvas.addListener(SWT.MouseDown, listenerDown);
 	    canvas.addListener(SWT.MouseMove, listenerMove);
 	    canvas.pack();
-	    final Button button = new Button(shell, SWT.PUSH);
-	    button.setText("Bleistift");
+	    final Button button = new Button(outerGroup2, SWT.PUSH);
+	    button.setText("Pencil");
 	    
 	    button.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("Bleistift");
+			
 				bleistift = !bleistift;
 			}
 
@@ -220,15 +279,15 @@ canvas.redraw();
 	       
 	      });
 	    
-	    final Button buttonViereck = new Button(shell, SWT.PUSH);
-	    buttonViereck.setText("Viereck");
+	    final Button buttonViereck = new Button(outerGroup2, SWT.PUSH);
+	    buttonViereck.setText("Square");
 	    
 	    buttonViereck.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("Bleistift");
+				System.out.println("square");
 				viereck = !viereck;
 			}
 
@@ -241,7 +300,29 @@ canvas.redraw();
 	       
 	      });
 	    
-	    final Button buttonColor = new Button(shell, SWT.PUSH);
+	    final Button buttonKreis = new Button(outerGroup2, SWT.PUSH);
+	    buttonKreis.setText("Circle");
+	    
+	    buttonKreis.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("Circle");
+				kreis = !kreis;
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+	       
+	      });
+	    
+	    
+	    final Button buttonColor = new Button(outerGroup2, SWT.PUSH);
 	    buttonColor.setText("Color");
 	    
 	    buttonColor.addSelectionListener(new SelectionListener() {
