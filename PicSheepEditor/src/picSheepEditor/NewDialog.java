@@ -58,6 +58,7 @@ public class NewDialog {
         ps = new PictureSettings();
         ps.setX(Integer.parseInt(widthText.getText()));
         ps.setY(Integer.parseInt(hightText.getText()));
+        ps.setColor(new Color(0,0,0));
         shell.dispose();
       }
 

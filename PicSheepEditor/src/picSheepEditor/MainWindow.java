@@ -1,6 +1,7 @@
 package picSheepEditor;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -132,6 +133,9 @@ canvas.redraw();
         outerGroup.setLayout(new GridLayout(1, true));
         outerGroup.setText("Image");
 
+        ScrolledComposite scrolledComposite = new ScrolledComposite( shell, SWT.H_SCROLL | SWT.V_SCROLL );
+       
+        
         outerGroup2 = new Group(shell, SWT.NONE);
 
         // Tell the group to stretch in all directions
@@ -141,6 +145,11 @@ canvas.redraw();
 
         
 	    canvas = new Canvas(outerGroup, SWT.NONE);
+	    canvas.setSize(ps.getY(), ps.getX());
+	    
+	    
+	    scrolledComposite.setContent( canvas );
+	    
 	    canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	    canvas.addPaintListener((PaintListener) new PaintListener() {
 	      public void paintControl(PaintEvent e) {
