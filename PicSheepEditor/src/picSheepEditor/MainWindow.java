@@ -21,6 +21,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.ColorDialog;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -120,21 +121,37 @@ canvas.redraw();
 	    ps.setY(200);
 	    ps.setColor(new Color(0,0,0));
 	    shell.setText("PicSheepEditor");
-	    shell.setLayout(new FillLayout());
+	    //shell.setLayout(new FillLayout());
 
 	    GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 1;
         shell.setLayout(gridLayout);
 	    
-        outerGroup = new Group(shell, SWT.NONE);
+       // outerGroup = new Group(shell, SWT.NONE);
 
         // Tell the group to stretch in all directions
-        outerGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        /*outerGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         outerGroup.setLayout(new GridLayout(1, true));
         outerGroup.setText("Image");
-
+*/
         ScrolledComposite scrolledComposite = new ScrolledComposite( shell, SWT.H_SCROLL | SWT.V_SCROLL );
        
+ 
+      
+
+        // Set the minimum size
+        scrolledComposite.setMinSize(400, 400);
+
+        // Expand both horizontally and vertically
+  
+        
+        scrolledComposite.setExpandHorizontal( true );
+        scrolledComposite.setExpandVertical( true );
+        scrolledComposite.setMinSize(ps.getY(), ps.getX());
+        scrolledComposite.setBounds(0, 0, ps.getY(), ps.getX());
+        
+       
+
         
         outerGroup2 = new Group(shell, SWT.NONE);
 
@@ -144,11 +161,21 @@ canvas.redraw();
         outerGroup2.setText("Tools");
 
         
-	    canvas = new Canvas(outerGroup, SWT.NONE);
+	    canvas = new Canvas(scrolledComposite,SWT.NONE);
 	    canvas.setSize(ps.getY(), ps.getX());
+	    scrolledComposite.setContent(canvas);
+	  
+	    //scrolledComposite.setContent( canvas );
 	    
-	    
-	    scrolledComposite.setContent( canvas );
+	    scrolledComposite.addListener( SWT.Resize, event -> {
+      	  int width = scrolledComposite.getClientArea().width;
+      	  //scrolledComposite.setMinSize( shell.computeSize( width, SWT.DEFAULT ) );
+      	  
+      	  int height = scrolledComposite.getClientArea().height;
+      	  scrolledComposite.setMinSize( shell.computeSize(width,height));
+      	//  scrolledComposite.setMinSize(width, height);
+      } );
+
 	    
 	    canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	    canvas.addPaintListener((PaintListener) new PaintListener() {
@@ -453,7 +480,7 @@ canvas.redraw();
 	    newItem.addSelectionListener(new MenuItemListener());
 	    saveItem.addSelectionListener(new MenuItemListener());
 	   
-	    
+	    scrolledComposite.pack();
 	    shell.pack();
 	    shell.open();
 	    while (!shell.isDisposed()) {
