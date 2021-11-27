@@ -117,8 +117,8 @@ canvas.redraw();
 	    
 	    
 	    ps = new PictureSettings();
-	    ps.setX(400);
-	    ps.setY(200);
+	    ps.setX(320);
+	    ps.setY(240);
 	    ps.setColor(new Color(0,0,0));
 	    shell.setText("PicSheepEditor");
 	    //shell.setLayout(new FillLayout());
@@ -140,7 +140,7 @@ canvas.redraw();
       
 
         // Set the minimum size
-        scrolledComposite.setMinSize(400, 400);
+        //scrolledComposite.setMinSize(400, 400);
 
         // Expand both horizontally and vertically
   
@@ -162,7 +162,7 @@ canvas.redraw();
 
         
 	    canvas = new Canvas(scrolledComposite,SWT.NONE);
-	    canvas.setSize(ps.getY(), ps.getX());
+	    canvas.setSize(ps.getX(), ps.getY());
 	    scrolledComposite.setContent(canvas);
 	  
 	    //scrolledComposite.setContent( canvas );
@@ -171,8 +171,8 @@ canvas.redraw();
       	  int width = scrolledComposite.getClientArea().width;
       	  //scrolledComposite.setMinSize( shell.computeSize( width, SWT.DEFAULT ) );
       	  
-      	  int height = scrolledComposite.getClientArea().height;
-      	  scrolledComposite.setMinSize( shell.computeSize(width,height));
+      	  int height=scrolledComposite.getClientArea().height;
+      	  scrolledComposite.setMinSize( scrolledComposite.computeSize(width,height));
       	//  scrolledComposite.setMinSize(width, height);
       } );
 
