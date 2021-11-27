@@ -168,14 +168,24 @@ canvas.redraw();
 	    //scrolledComposite.setContent( canvas );
 	    
 	    scrolledComposite.addListener( SWT.Resize, event -> {
-      	  int width = scrolledComposite.getClientArea().width;
+      	  int width = shell.getClientArea().width;
       	  //scrolledComposite.setMinSize( shell.computeSize( width, SWT.DEFAULT ) );
       	  
-      	  int height=scrolledComposite.getClientArea().height;
-      	  scrolledComposite.setMinSize( scrolledComposite.computeSize(width,height));
+      	  int height=canvas.getClientArea().height;
+      	  scrolledComposite.setMinSize( scrolledComposite.computeSize(width,SWT.DEFAULT));
+      	  //scrolledComposite.setMinSize(width,height);
+      	  //  scrolledComposite.setMinSize(width, height);
+      } );
+	    
+	    /*shell.addListener( SWT.Resize, event -> {
+      	  int width = shell.getClientArea().width;
+      	  //scrolledComposite.setMinSize( shell.computeSize( width, SWT.DEFAULT ) );
+      	  
+      	  int height=canvas.getClientArea().height;
+      	  scrolledComposite.setMinSize( scrolledComposite.computeSize(width,SWT.DEFAULT));
       	//  scrolledComposite.setMinSize(width, height);
       } );
-
+*/
 	    
 	    canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	    canvas.addPaintListener((PaintListener) new PaintListener() {
@@ -503,6 +513,7 @@ class MenuItemListener extends SelectionAdapter {
 	  gc.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 	   gc.fillRectangle(0, 0, ps.getX(),ps.getY());
 	   gc.dispose(); 	  
+	   canvas.setBounds(0, 0, ps.getX(), ps.getY());
 	  }
 	  else if (((MenuItem) event.widget).getText().equals("Save")) {
 		  System.out.println("save");
