@@ -173,8 +173,7 @@ canvas.redraw();
       	  
       	  int height=canvas.getClientArea().height;
       	  scrolledComposite.setMinSize( scrolledComposite.computeSize(width,SWT.DEFAULT));
-      	  //scrolledComposite.setMinSize(width,height);
-      	  //  scrolledComposite.setMinSize(width, height);
+      	//  scrolledComposite.setMinSize(width, height);
       } );
 	    
 	    /*shell.addListener( SWT.Resize, event -> {
