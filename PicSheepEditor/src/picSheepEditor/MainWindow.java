@@ -123,9 +123,10 @@ canvas.redraw();
 	    shell.setText("PicSheepEditor");
 	    //shell.setLayout(new FillLayout());
 
-	    GridLayout gridLayout = new GridLayout();
+	    GridLayout gridLayout = new GridLayout(1,true);
         gridLayout.numColumns = 1;
-        shell.setLayout(gridLayout);
+        shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        //shell.setLayout(gridLayout);
 	    
        // outerGroup = new Group(shell, SWT.NONE);
 
@@ -134,7 +135,9 @@ canvas.redraw();
         outerGroup.setLayout(new GridLayout(1, true));
         outerGroup.setText("Image");
 */
-        ScrolledComposite scrolledComposite = new ScrolledComposite( shell, SWT.H_SCROLL | SWT.V_SCROLL );
+        FillLayout fl = new FillLayout();
+        shell.setLayout(fl);
+        ScrolledComposite scrolledComposite = new ScrolledComposite( shell,SWT.FILL| SWT.H_SCROLL | SWT.V_SCROLL );
        
  
       
@@ -167,14 +170,19 @@ canvas.redraw();
 	  
 	    //scrolledComposite.setContent( canvas );
 	    
-	    scrolledComposite.addListener( SWT.Resize, event -> {
-      	  int width = shell.getClientArea().width;
+	    shell.addListener( SWT.Resize, event -> {
+      	  System.out.println("resize");
+	    	
+	    	int width = shell.getClientArea().width;
       	  //scrolledComposite.setMinSize( shell.computeSize( width, SWT.DEFAULT ) );
       	  
       	  int height=canvas.getClientArea().height;
       	  scrolledComposite.setMinSize( scrolledComposite.computeSize(width,SWT.DEFAULT));
-      	//  scrolledComposite.setMinSize(width, height);
-      } );
+      	  
+      	  //scrolledComposite.setMinSize(width,height);
+      	  //  scrolledComposite.setMinSize(width, height);
+      	  
+	    } );
 	    
 	    /*shell.addListener( SWT.Resize, event -> {
       	  int width = shell.getClientArea().width;
@@ -490,6 +498,7 @@ canvas.redraw();
 	    saveItem.addSelectionListener(new MenuItemListener());
 	   
 	    scrolledComposite.pack();
+	  
 	    shell.pack();
 	    shell.open();
 	    while (!shell.isDisposed()) {
