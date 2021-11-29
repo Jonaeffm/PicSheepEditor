@@ -32,7 +32,8 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
 public class MainWindow {
-int X,Y;
+int X,Y,newX,newY;
+
 	Image image;
 	Boolean mouse=false;
 	Boolean bleistift = false;
@@ -70,14 +71,14 @@ Canvas canvas ;
 			});
 		 canvas.redraw();
 	  }
-public void drawLineImage(Event event) {
+public void drawLineImage() {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
 		    	
 		    
 		    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
-		    	 
-		    	e.gc.drawLine(X, Y, event.x,event.y);
+		  
+		    	e.gc.drawLine(X, Y, newX,newY);
 		    	
 		    }
 		});
@@ -135,7 +136,7 @@ canvas.redraw();
         outerGroup.setLayout(new GridLayout(1, true));
         outerGroup.setText("Image");
 */
-        FillLayout fl = new FillLayout();
+        FillLayout fl = new FillLayout(SWT.VERTICAL);
         shell.setLayout(fl);
         ScrolledComposite scrolledComposite = new ScrolledComposite( shell,SWT.FILL| SWT.H_SCROLL | SWT.V_SCROLL );
        
@@ -325,16 +326,18 @@ canvas.redraw();
 	        	   }
 	        	   if(mouse&&bleistift)
 	        	   	{
-	        		
-	        		   drawLineImage(event);
 	        		   
+	        		  	 newX=event.x;
+	    		    	 newY=event.y;
+	        		   drawLineImage();
+	        		   X = newX;
+			            Y = newY;
 	   		    	//gc.drawImage(image, 0, 0);
 	        		  /* GC gc = new GC(canvas);
 	        		   gc.setForeground( new Color( ps.getColor().getRGB() ) );
 	        		   gc.drawLine(X, Y, event.x,event.y);
 	        		   gc.dispose(); */
-	        		   X = event.x;
-			            Y = event.y;
+	        		  
 	        	   }
 	        	   }
 	          }
@@ -517,7 +520,7 @@ class MenuItemListener extends SelectionAdapter {
 	  NewDialog nd = new NewDialog();
 	  ps = nd.show(display);
 	  
-	  GC gc = new GC(outerGroup);
+	  GC gc = new GC(canvas);
 	  gc.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 	   gc.fillRectangle(0, 0, ps.getX(),ps.getY());
 	   gc.dispose(); 	  
