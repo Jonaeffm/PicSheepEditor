@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -46,6 +47,19 @@ Canvas canvas ;
 	   Group outerGroup,outerGroup2;
 	  Shell shell;
 	 
+	  public void saveAs(String pfad)
+	  {
+		  Image drawable = new Image(display, canvas.getBounds());
+			GC gc = new GC(drawable);
+			canvas.print(gc);
+			ImageLoader loader = new ImageLoader();
+			loader.data = new org.eclipse.swt.graphics.ImageData[] {drawable.getImageData()};
+			loader.save(pfad, SWT.IMAGE_PNG);
+			drawable.dispose();
+			gc.dispose();
+
+	  }
+	  
 	  public void save()
 	  {
 		  Image drawable = new Image(display, canvas.getBounds());
@@ -105,6 +119,19 @@ public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
    			    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
    	        		   e.gc.drawOval(xk, yk, xg-xk,yg-yk);
    			
+		    }
+		});
+
+canvas.redraw();
+}
+
+public void drawPointImage(Event event) {
+	 canvas.addPaintListener(new PaintListener() { 
+		    public void paintControl(PaintEvent e) { 
+		    	
+  			    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
+  	        		   e.gc.drawPoint(event.x,event.y);
+  			
 		    }
 		});
 
@@ -329,9 +356,9 @@ canvas.redraw();
 	        		   
 	        		  	 newX=event.x;
 	    		    	 newY=event.y;
-	        		   drawLineImage();
-	        		   X = newX;
-			            Y = newY;
+	        		   drawPointImage(event);
+	        		   X = event.x;
+			            Y = event.y;
 	   		    	//gc.drawImage(image, 0, 0);
 	        		  /* GC gc = new GC(canvas);
 	        		   gc.setForeground( new Color( ps.getColor().getRGB() ) );
@@ -360,7 +387,7 @@ canvas.redraw();
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
+				bleistift = !bleistift;
 			}
 
 	       
@@ -468,8 +495,7 @@ canvas.redraw();
 	    openItem.setText("Open...");
 	    MenuItem saveItem = new MenuItem(fileMenu, SWT.NONE);
 	    saveItem.setText("Save");
-	    MenuItem saveAsItem = new MenuItem(fileMenu, SWT.NONE);
-	    saveAsItem.setText("Save As...");
+	
 	    new MenuItem(fileMenu, SWT.SEPARATOR);
 	    MenuItem pageSetupItem = new MenuItem(fileMenu, SWT.NONE);
 	    pageSetupItem.setText("Page Setup...");
@@ -499,7 +525,7 @@ canvas.redraw();
 	    
 	    newItem.addSelectionListener(new MenuItemListener());
 	    saveItem.addSelectionListener(new MenuItemListener());
-	   
+	   openItem.addSelectionListener(new MenuItemListener());
 	    scrolledComposite.pack();
 	  
 	    shell.pack();
@@ -536,11 +562,33 @@ class MenuItemListener extends SelectionAdapter {
 			loader.save("/home/jon/Bilder/swt.png", SWT.IMAGE_PNG);
 			drawable.dispose();
 			gc.dispose();*/
-		  save();
+		  FileDialog fd = new FileDialog(shell, SWT.SAVE);
+	        fd.setText("Save as");
+	        fd.setFilterPath("/");
+	        String[] filterExt = { "*.png"};
+	        fd.setFilterExtensions(filterExt);
+	        String selected = fd.open();
+	        System.out.println(selected);
+		  saveAs(selected);
 
 
 
 		  
+	  }
+	  else if (((MenuItem) event.widget).getText().equals("Open...")) {
+		 System.out.println("OpenDialog");
+		  
+		  FileDialog fd = new FileDialog(shell, SWT.OPEN);
+	        fd.setText("Open");
+	        fd.setFilterPath("/");
+	        String[] filterExt = { "*.png"};
+	        fd.setFilterExtensions(filterExt);
+	        String selected = fd.open();
+	        System.out.println(selected);
+	        Image image = new Image(display,selected);
+   		    
+		    	drawImage(image);
+	  
 	  }
 	 }
 	  }
