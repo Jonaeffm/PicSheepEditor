@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -151,10 +152,12 @@ canvas.redraw();
 	    shell.setText("PicSheepEditor");
 	    //shell.setLayout(new FillLayout());
 
-	    GridLayout gridLayout = new GridLayout(1,true);
+	    GridLayout gridLayout = new GridLayout(1,false);
         gridLayout.numColumns = 1;
+
+       
         shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        //shell.setLayout(gridLayout);
+        shell.setLayout(gridLayout);
 	    
        // outerGroup = new Group(shell, SWT.NONE);
 
@@ -163,10 +166,16 @@ canvas.redraw();
         outerGroup.setLayout(new GridLayout(1, true));
         outerGroup.setText("Image");
 */
-        FillLayout fl = new FillLayout(SWT.VERTICAL);
-        shell.setLayout(fl);
-        ScrolledComposite scrolledComposite = new ScrolledComposite( shell,SWT.FILL| SWT.H_SCROLL | SWT.V_SCROLL );
-       
+        //FillLayout fl = new FillLayout(SWT.VERTICAL);
+        //shell.setLayout(fl);
+        ScrolledComposite scrolledComposite = new ScrolledComposite( shell,SWT.SINGLE | SWT.BORDER| SWT.H_SCROLL | SWT.V_SCROLL );
+        GridData gridData;
+        gridData = new GridData();
+        gridData.horizontalAlignment = GridData.FILL;
+       gridData.verticalAlignment=GridData.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.grabExcessVerticalSpace=true;
+        scrolledComposite.setLayoutData(gridData);
  
       
 
@@ -176,10 +185,10 @@ canvas.redraw();
         // Expand both horizontally and vertically
   
         
-        scrolledComposite.setExpandHorizontal( true );
-        scrolledComposite.setExpandVertical( true );
-        scrolledComposite.setMinSize(ps.getY(), ps.getX());
-        scrolledComposite.setBounds(0, 0, ps.getY(), ps.getX());
+        //scrolledComposite.setExpandHorizontal( true );
+        //scrolledComposite.setExpandVertical( true );
+       // scrolledComposite.setMinSize(ps.getY(), ps.getX());
+        //scrolledComposite.setBounds(0, 0, ps.getY(), ps.getX());
         
        
 
@@ -187,10 +196,17 @@ canvas.redraw();
         outerGroup2 = new Group(shell, SWT.NONE);
 
         // Tell the group to stretch in all directions
-        outerGroup2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+       // outerGroup2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         outerGroup2.setLayout(new GridLayout(10, true));
         outerGroup2.setText("Tools");
-
+        
+        GridData data1 = new GridData(SWT.FILL, SWT.BOTTOM, true, false);
+        
+        data1.heightHint = 50;
+        data1.verticalSpan = 1;
+        outerGroup2.setLayoutData(data1);
+        
+       
         
 	    canvas = new Canvas(scrolledComposite,SWT.NONE);
 	    canvas.setSize(ps.getX(), ps.getY());
@@ -205,11 +221,11 @@ canvas.redraw();
       	  //scrolledComposite.setMinSize( shell.computeSize( width, SWT.DEFAULT ) );
       	  
       	  int height=canvas.getClientArea().height;
-      	  scrolledComposite.setMinSize( scrolledComposite.computeSize(width,SWT.DEFAULT));
+      	  scrolledComposite.setMinSize( scrolledComposite.computeSize(width,height));
       	  
       	  //scrolledComposite.setMinSize(width,height);
       	  //  scrolledComposite.setMinSize(width, height);
-      	  
+      
 	    } );
 	    
 	    /*shell.addListener( SWT.Resize, event -> {
@@ -526,6 +542,7 @@ canvas.redraw();
 	    newItem.addSelectionListener(new MenuItemListener());
 	    saveItem.addSelectionListener(new MenuItemListener());
 	   openItem.addSelectionListener(new MenuItemListener());
+	   exitItem.addSelectionListener(new MenuItemListener());
 	    scrolledComposite.pack();
 	  
 	    shell.pack();
@@ -589,6 +606,10 @@ class MenuItemListener extends SelectionAdapter {
    		    
 		    	drawImage(image);
 	  
+	  }
+	  
+	  else if (((MenuItem) event.widget).getText().equals("Exit")) {
+		  shell.dispose();
 	  }
 	 }
 	  }
