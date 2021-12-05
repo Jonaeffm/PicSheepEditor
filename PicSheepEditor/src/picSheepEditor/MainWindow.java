@@ -12,7 +12,9 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
@@ -48,6 +50,46 @@ Canvas canvas ;
 	   Group outerGroup,outerGroup2;
 	  Shell shell;
 	 
+	  public void drawInversePoint(RGB rgb,int x,int y)
+	  {
+		  canvas.addPaintListener(new PaintListener() { 
+			    public void paintControl(PaintEvent e) { 
+			    	
+			    
+			    	e.gc.setForeground( new Color( rgb ) );
+			  
+			    	e.gc.drawPoint(x, y);
+			    	
+			    }
+			});
+		 canvas.redraw();  
+	  }
+
+	  
+	  
+public Image inverse(Image i)
+{
+	//Image drawable = new Image(display, canvas.getBounds());
+	 GC gc = new GC(i);
+	for (int x = 0;x<i.getBounds().width;x++)
+	{	for (int y=0;y<i.getBounds().height;y++)
+		{
+		
+         //gc.copyArea(i, e.x, e.y);
+         ImageData imageData = i.getImageData();                
+         int pixelValue = imageData.getPixel(x, y);
+         PaletteData palette = imageData.palette;
+         RGB rgb = palette.getRGB(pixelValue);
+         Color c = new Color( 255-rgb.red ,255-rgb.green,255-rgb.blue );
+       	drawInversePoint(c.getRGB(),x,y);
+         System.out.println(rgb);
+        // canvas.redraw();
+		}
+	}
+	return i;
+	
+}
+	  
 	  public void saveAs(String pfad)
 	  {
 		  Image drawable = new Image(display, canvas.getBounds());
@@ -489,15 +531,15 @@ canvas.redraw();
 	       
 	      });
 	    
-	    Menu menu, fileMenu, editMenu, viewMenu;
+	    Menu menu, fileMenu, effectMenu, viewMenu;
 
 	    
 
 	    menu = new Menu(shell, SWT.BAR);
 	    MenuItem fileItem = new MenuItem(menu, SWT.CASCADE);
 	    fileItem.setText("File");
-	    MenuItem editItem = new MenuItem(menu, SWT.CASCADE);
-	    editItem.setText("Edit");
+	    MenuItem effectItem = new MenuItem(menu, SWT.CASCADE);
+	    effectItem.setText("Effects");
 	    MenuItem viewItem = new MenuItem(menu, SWT.CASCADE);
 	    viewItem.setText("View");
 	    MenuItem helpItem = new MenuItem(menu, SWT.CASCADE);
@@ -521,11 +563,11 @@ canvas.redraw();
 	    MenuItem exitItem = new MenuItem(fileMenu, SWT.NONE);
 	    exitItem.setText("Exit");
 
-	    editMenu = new Menu(menu);
-	    editItem.setMenu(editMenu);
-	    MenuItem cutItem = new MenuItem(editMenu, SWT.NONE);
-	    cutItem.setText("Cut");
-	    MenuItem pasteItem = new MenuItem(editMenu, SWT.NONE);
+	    effectMenu = new Menu(menu);
+	    effectItem.setMenu(effectMenu);
+	    MenuItem negativItem = new MenuItem(effectMenu, SWT.NONE);
+	    negativItem.setText("Negativ");
+	    MenuItem pasteItem = new MenuItem(effectMenu, SWT.NONE);
 	    pasteItem.setText("Paste");
 
 	    viewMenu = new Menu(menu);
@@ -543,6 +585,7 @@ canvas.redraw();
 	    saveItem.addSelectionListener(new MenuItemListener());
 	   openItem.addSelectionListener(new MenuItemListener());
 	   exitItem.addSelectionListener(new MenuItemListener());
+	   negativItem.addSelectionListener(new MenuItemListener());
 	    scrolledComposite.pack();
 	  
 	    shell.pack();
@@ -610,6 +653,11 @@ class MenuItemListener extends SelectionAdapter {
 	  
 	  else if (((MenuItem) event.widget).getText().equals("Exit")) {
 		  shell.dispose();
+	  }
+	  else if (((MenuItem) event.widget).getText().equals("Negativ")) {
+		  System.out.println("negativ");
+		  Image drawable = new Image(display, canvas.getBounds());
+		  inverse(drawable);
 	  }
 	 }
 	  }
