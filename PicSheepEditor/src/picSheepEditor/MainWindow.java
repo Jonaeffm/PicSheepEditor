@@ -101,7 +101,7 @@ public Image inverse(Image i)
 	
 	Image j =new Image( i.getDevice(), imageData );
 	drawInversePoint(j);
-
+	
 	return j; 
 }
 	  
@@ -671,8 +671,17 @@ class MenuItemListener extends SelectionAdapter {
 	  }
 	  else if (((MenuItem) event.widget).getText().equals("Negativ")) {
 		  System.out.println("negativ");
-		  Image drawable = new Image(display, canvas.getBounds());
-		  inverse(drawable);
+		  
+		  save();
+		    	
+			
+			
+		    
+		    Image drawable = new Image(display,"/home/jon/Bilder/swt.png");
+		  
+		  //Image drawable = new Image(display, canvas.getBounds());
+		 Image j = inverse(drawable);
+		
 	  }
 	 }
 	  }
