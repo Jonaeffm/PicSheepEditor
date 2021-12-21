@@ -50,19 +50,19 @@ Canvas canvas ;
 	   Group outerGroup,outerGroup2;
 	  Shell shell;
 	 
-	  public void drawInversePoint(RGB rgb,int x,int y)
+	  public void drawInversePoint(Image i)
 	  {
 		  canvas.addPaintListener(new PaintListener() { 
 			    public void paintControl(PaintEvent e) { 
 			    	
 			    
-			    	e.gc.setForeground( new Color( rgb ) );
+			    	//e.gc.setForeground( rgb  );
 			  
-			    	e.gc.drawPoint(x, y);
-			    	
+			    	//e.gc.drawPoint(x, y);
+			    	e.gc.drawImage(i, 0, 0);
 			    }
 			});
-		 canvas.redraw();  
+			canvas.redraw();
 	  }
 
 	  
@@ -71,23 +71,38 @@ public Image inverse(Image i)
 {
 	//Image drawable = new Image(display, canvas.getBounds());
 	 GC gc = new GC(i);
+	 ImageData imageData= i.getImageData();;
+	 int pixelValue ;
+	 PaletteData palette = imageData.palette;
+	 RGB rgb ;
+	 Color c ;
 	for (int x = 0;x<i.getBounds().width;x++)
 	{	for (int y=0;y<i.getBounds().height;y++)
 		{
 		
          //gc.copyArea(i, e.x, e.y);
-         ImageData imageData = i.getImageData();                
-         int pixelValue = imageData.getPixel(x, y);
-         PaletteData palette = imageData.palette;
-         RGB rgb = palette.getRGB(pixelValue);
-         Color c = new Color( 255-rgb.red ,255-rgb.green,255-rgb.blue );
-       	drawInversePoint(c.getRGB(),x,y);
-         System.out.println(rgb);
+                        
+         pixelValue = imageData.getPixel(x, y);
+      
+         rgb = palette.getRGB(pixelValue);
+       
+        // c = new Color( 255-rgb.red ,255-rgb.green,255-rgb.blue );
+       	
+        
+         int pixel = palette.getPixel(new RGB( 255-rgb.red ,255-rgb.green,255-rgb.blue));
+         imageData.setPixel(x, y, pixel);
+        
+        //drawInversePoint(c,x,y);
+        // System.out.println(rgb);
         // canvas.redraw();
 		}
 	}
-	return i;
+	// canvas.redraw();  
 	
+	Image j =new Image( i.getDevice(), imageData );
+	drawInversePoint(j);
+
+	return j; 
 }
 	  
 	  public void saveAs(String pfad)
