@@ -434,7 +434,7 @@ canvas.redraw();
 	      Listener listenerMove = new Listener() {
 	     
 	          public void handleEvent(Event event) {
-	            
+	        	  int xk,xg,yk,yg;
 	              /*if ((event.stateMask & SWT.BUTTON1) == 0)
 	                break;*/
 	        	   System.out.println("Move");
@@ -447,11 +447,17 @@ canvas.redraw();
 	        	   if(mouse&&bleistift)
 	        	   	{
 	        		   
-	        		  	 newX=event.x;
-	    		    	 newY=event.y;
-	        		   drawPointImage(event);
-	        		   X = event.x;
-			            Y = event.y;
+	        		 
+	        			   xk=X;
+	        			   xg=event.x;
+	        		   
+	        		   
+	        		   
+	        			   yk=Y;
+	        			   yg=event.y;
+	        			   drawLineImage(event,xg,xk,yg,yk);
+	        			   X = event.x;
+				            Y = event.y;
 	   		    	//gc.drawImage(image, 0, 0);
 	        		  /* GC gc = new GC(canvas);
 	        		   gc.setForeground( new Color( ps.getColor().getRGB() ) );
