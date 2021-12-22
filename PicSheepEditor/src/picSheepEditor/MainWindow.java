@@ -43,6 +43,7 @@ int X,Y,newX,newY;
 	Boolean bleistift = false;
 	Boolean viereck = false;
 	Boolean kreis = false;
+	Boolean line = false;
 PictureSettings ps;
 	  
 Canvas canvas ;
@@ -143,14 +144,14 @@ public Image inverse(Image i)
 			});
 		 canvas.redraw();
 	  }
-public void drawLineImage() {
+public void drawLineImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
 		    	
 		    
 		    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
 		  
-		    	e.gc.drawLine(X, Y, newX,newY);
+		    	e.gc.drawLine(xk, yk, xg,yg);
 		    	
 		    }
 		});
@@ -338,6 +339,12 @@ canvas.redraw();
 		            Y = event.y;
 	            
 	            }
+	            if(!mouse&&line)
+	            {
+	            	X = event.x;
+		            Y = event.y;
+	            
+	            }
 	            if(mouse&&viereck)
 	            {
 	         	   if(X<event.x)
@@ -368,6 +375,19 @@ canvas.redraw();
 	            		
 		            
 		            
+	            }
+	            if(mouse&&line)
+	            {
+	         	   
+        			   xk=X;
+        			   xg=event.x;
+        		   
+        		   
+        			   yk=Y;
+        			   yg=event.y;
+        		   
+        		  
+        		   drawLineImage(event,xg,xk,yg,yk);
 	            }
 	            if(!mouse&&kreis)
 	            {
@@ -507,6 +527,28 @@ canvas.redraw();
 
 	       
 	      });
+	    
+	    final Button buttonLine = new Button(outerGroup2, SWT.PUSH);
+	    buttonLine.setText("Line");
+	    
+	    buttonLine.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("Circle");
+				line = !line;
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+	       
+	      });
+	 
 	    
 	    
 	    final Button buttonColor = new Button(outerGroup2, SWT.PUSH);
