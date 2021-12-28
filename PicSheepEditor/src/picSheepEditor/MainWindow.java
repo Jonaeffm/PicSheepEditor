@@ -105,7 +105,47 @@ public Image inverse(Image i)
 	
 	return j; 
 }
-	  
+	
+public Image grayscale(Image i)
+{
+	//Image drawable = new Image(display, canvas.getBounds());
+	 /*GC gc = new GC(i);
+	 ImageData imageData= i.getImageData();;
+	 int pixelValue ;
+	 PaletteData palette = imageData.palette;
+	 RGB rgb ;
+	 Color c ;
+	for (int x = 0;x<i.getBounds().width;x++)
+	{	for (int y=0;y<i.getBounds().height;y++)
+		{
+		
+         //gc.copyArea(i, e.x, e.y);
+                        
+         pixelValue = imageData.getPixel(x, y);
+      
+         rgb = palette.getRGB(pixelValue);
+       
+        // c = new Color( 255-rgb.red ,255-rgb.green,255-rgb.blue );
+       	
+        
+         int pixel = palette.getPixel(new RGB( 255-rgb.red ,255-rgb.green,255-rgb.blue));
+         imageData.setPixel(x, y, pixel);
+        
+        //drawInversePoint(c,x,y);
+        // System.out.println(rgb);
+        // canvas.redraw();
+		}
+	}
+	// canvas.redraw();  
+	
+	Image j =new Image( i.getDevice(), imageData );
+	drawInversePoint(j);
+	*/
+	Image j = new Image(display, i, SWT.IMAGE_GRAY);
+	drawInversePoint(j);
+	return j; 
+}
+
 	  public void saveAs(String pfad)
 	  {
 		  Image drawable = new Image(display, canvas.getBounds());
@@ -630,8 +670,8 @@ canvas.redraw();
 	    effectItem.setMenu(effectMenu);
 	    MenuItem negativItem = new MenuItem(effectMenu, SWT.NONE);
 	    negativItem.setText("Negativ");
-	    MenuItem pasteItem = new MenuItem(effectMenu, SWT.NONE);
-	    pasteItem.setText("Paste");
+	    MenuItem grayscaleItem = new MenuItem(effectMenu, SWT.NONE);
+	    grayscaleItem.setText("Grayscale");
 
 	    viewMenu = new Menu(menu);
 	    viewItem.setMenu(viewMenu);
@@ -649,6 +689,7 @@ canvas.redraw();
 	   openItem.addSelectionListener(new MenuItemListener());
 	   exitItem.addSelectionListener(new MenuItemListener());
 	   negativItem.addSelectionListener(new MenuItemListener());
+	   grayscaleItem.addSelectionListener(new MenuItemListener());
 	    scrolledComposite.pack();
 	  
 	    shell.pack();
@@ -729,6 +770,20 @@ class MenuItemListener extends SelectionAdapter {
 		  
 		  //Image drawable = new Image(display, canvas.getBounds());
 		 Image j = inverse(drawable);
+		
+	  }
+	  else if (((MenuItem) event.widget).getText().equals("Grayscale")) {
+		  System.out.println("grayscale");
+		  
+		  save();
+		    	
+			
+			
+		    
+		    Image drawable = new Image(display,"/home/jon/Bilder/swt.png");
+		  
+		  //Image drawable = new Image(display, canvas.getBounds());
+		 Image j = grayscale(drawable);
 		
 	  }
 	 }
