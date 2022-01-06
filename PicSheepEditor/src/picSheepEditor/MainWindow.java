@@ -50,7 +50,7 @@ Canvas canvas ;
 	  Display display;
 	   Group outerGroup,outerGroup2;
 	  Shell shell;
-	 
+	  ScrolledComposite scrolledComposite;
 	  public void drawInversePoint(Image i)
 	  {
 		  canvas.addPaintListener(new PaintListener() { 
@@ -172,6 +172,20 @@ public Image grayscale(Image i)
 
 	  }
 	  
+	  public void drawNewImage()
+	  {
+		  canvas.addPaintListener(new PaintListener() { 
+			    public void paintControl(PaintEvent e) { 
+			    	
+			    
+			    	//e.gc.setForeground( rgb  );
+			  
+			    	//e.gc.drawPoint(x, y);
+			    	e.gc.fillRectangle(0, 0, ps.getX(),ps.getY());
+			    }
+			});
+	  }
+	  
 	  public void drawImage(Image i)
 	  {
 		  canvas.addPaintListener(new PaintListener() { 
@@ -266,7 +280,7 @@ canvas.redraw();
 */
         //FillLayout fl = new FillLayout(SWT.VERTICAL);
         //shell.setLayout(fl);
-        ScrolledComposite scrolledComposite = new ScrolledComposite( shell,SWT.SINGLE | SWT.BORDER| SWT.H_SCROLL | SWT.V_SCROLL );
+       scrolledComposite = new ScrolledComposite( shell,SWT.SINGLE | SWT.BORDER| SWT.H_SCROLL | SWT.V_SCROLL );
         GridData gridData;
         gridData = new GridData();
         gridData.horizontalAlignment = GridData.FILL;
@@ -710,11 +724,17 @@ class MenuItemListener extends SelectionAdapter {
 	  NewDialog nd = new NewDialog();
 	  ps = nd.show(display);
 	  
-	  GC gc = new GC(canvas);
+	  //canvas = new Canvas(scrolledComposite,SWT.NONE);
+	    canvas.setSize(ps.getX(), ps.getY());
+	    
+	  /*GC gc = new GC(canvas);
 	  gc.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 	   gc.fillRectangle(0, 0, ps.getX(),ps.getY());
-	   gc.dispose(); 	  
-	   canvas.setBounds(0, 0, ps.getX(), ps.getY());
+	   gc.dispose(); 	*/
+	    canvas.setBounds(0, 0, ps.getX(), ps.getY());
+	    drawNewImage();
+		canvas.redraw();
+	   
 	  }
 	  else if (((MenuItem) event.widget).getText().equals("Save")) {
 		  System.out.println("save");
