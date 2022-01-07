@@ -45,7 +45,7 @@ int X,Y,newX,newY;
 	Boolean kreis = false;
 	Boolean line = false;
 PictureSettings ps;
-	  
+	  String fileName;
 Canvas canvas ;
 	  Display display;
 	   Group outerGroup,outerGroup2;
@@ -161,12 +161,19 @@ public Image grayscale(Image i)
 	  
 	  public void save()
 	  {
+		  if(fileName==null) {
+		  FileDialog fd = new FileDialog(shell, SWT.SAVE);
+	        fd.setText("Save as");
+	        fd.setFilterPath("/");
+	        String[] filterExt = { "*.png"};
+	        fd.setFilterExtensions(filterExt);
+	        fileName = fd.open();}
 		  Image drawable = new Image(display, canvas.getBounds());
 			GC gc = new GC(drawable);
 			canvas.print(gc);
 			ImageLoader loader = new ImageLoader();
 			loader.data = new org.eclipse.swt.graphics.ImageData[] {drawable.getImageData()};
-			loader.save("/home/jon/Bilder/swt.png", SWT.IMAGE_PNG);
+			loader.save(fileName, SWT.IMAGE_PNG);
 			drawable.dispose();
 			gc.dispose();
 
@@ -634,7 +641,7 @@ canvas.redraw();
 			      //color.dispose();
 			    }
 			    
-			    Image image = new Image(display,"/home/jon/Bilder/swt.png");
+			    Image image = new Image(display,fileName);
 	   		    
    		    	drawImage(image);
 			}
@@ -786,7 +793,7 @@ class MenuItemListener extends SelectionAdapter {
 			
 			
 		    
-		    Image drawable = new Image(display,"/home/jon/Bilder/swt.png");
+		    Image drawable = new Image(display,fileName);
 		  
 		  //Image drawable = new Image(display, canvas.getBounds());
 		 Image j = inverse(drawable);
