@@ -36,378 +36,218 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
 public class MainWindow {
-int X,Y,newX,newY;
-
+	
+	int X,Y,newX,newY;
 	Image image;
 	Boolean mouse=false;
 	Boolean bleistift = false;
 	Boolean viereck = false;
 	Boolean kreis = false;
 	Boolean line = false;
-PictureSettings ps;
-	  String fileName;
-Canvas canvas ;
-	  Display display;
-	   Group outerGroup,outerGroup2;
-	  Shell shell;
-	  ScrolledComposite scrolledComposite;
-	  public void drawInversePoint(Image i)
-	  {
-		  canvas.addPaintListener(new PaintListener() { 
-			    public void paintControl(PaintEvent e) { 
-			    	
-			    
-			    	//e.gc.setForeground( rgb  );
-			  
-			    	//e.gc.drawPoint(x, y);
-			    	e.gc.drawImage(i, 0, 0);
-			    }
-			});
-			canvas.redraw();
+	PictureSettings ps;
+	String fileName;
+	Canvas canvas ;
+	Display display;
+	Group outerGroup,outerGroup2;
+	Shell shell;
+	ScrolledComposite scrolledComposite;
+	
+	public void drawInversePoint(Image i)
+	{
+		canvas.addPaintListener(new PaintListener() { 
+			public void paintControl(PaintEvent e) { 
+				e.gc.drawImage(i, 0, 0);
+			}
+		});
+		canvas.redraw();
 	  }
 
-	  
-	  
 public Image inverse(Image i)
 {
-	//Image drawable = new Image(display, canvas.getBounds());
 	 GC gc = new GC(i);
 	 ImageData imageData= i.getImageData();;
 	 int pixelValue ;
 	 PaletteData palette = imageData.palette;
 	 RGB rgb ;
 	 Color c ;
-	for (int x = 0;x<i.getBounds().width;x++)
-	{	for (int y=0;y<i.getBounds().height;y++)
+	 for (int x = 0;x<i.getBounds().width;x++)
+	 {	for (int y=0;y<i.getBounds().height;y++)
 		{
-		
-         //gc.copyArea(i, e.x, e.y);
-                        
-         pixelValue = imageData.getPixel(x, y);
-      
-         rgb = palette.getRGB(pixelValue);
-       
-        // c = new Color( 255-rgb.red ,255-rgb.green,255-rgb.blue );
-       	
-        
-         int pixel = palette.getPixel(new RGB( 255-rgb.red ,255-rgb.green,255-rgb.blue));
-         imageData.setPixel(x, y, pixel);
-        
-        //drawInversePoint(c,x,y);
-        // System.out.println(rgb);
-        // canvas.redraw();
-		}
+		 	pixelValue = imageData.getPixel(x, y);
+      	 	rgb = palette.getRGB(pixelValue);
+            int pixel = palette.getPixel(new RGB( 255-rgb.red ,255-rgb.green,255-rgb.blue));
+            imageData.setPixel(x, y, pixel);
+        }
 	}
-	// canvas.redraw();  
-	
 	Image j =new Image( i.getDevice(), imageData );
 	drawInversePoint(j);
-	
 	return j; 
 }
 	
 public Image grayscale(Image i)
 {
-	//Image drawable = new Image(display, canvas.getBounds());
-	 /*GC gc = new GC(i);
-	 ImageData imageData= i.getImageData();;
-	 int pixelValue ;
-	 PaletteData palette = imageData.palette;
-	 RGB rgb ;
-	 Color c ;
-	for (int x = 0;x<i.getBounds().width;x++)
-	{	for (int y=0;y<i.getBounds().height;y++)
-		{
-		
-         //gc.copyArea(i, e.x, e.y);
-                        
-         pixelValue = imageData.getPixel(x, y);
-      
-         rgb = palette.getRGB(pixelValue);
-       
-        // c = new Color( 255-rgb.red ,255-rgb.green,255-rgb.blue );
-       	
-        
-         int pixel = palette.getPixel(new RGB( 255-rgb.red ,255-rgb.green,255-rgb.blue));
-         imageData.setPixel(x, y, pixel);
-        
-        //drawInversePoint(c,x,y);
-        // System.out.println(rgb);
-        // canvas.redraw();
-		}
-	}
-	// canvas.redraw();  
-	
-	Image j =new Image( i.getDevice(), imageData );
-	drawInversePoint(j);
-	*/
 	Image j = new Image(display, i, SWT.IMAGE_GRAY);
 	drawInversePoint(j);
 	return j; 
 }
 
-	  public void saveAs(String pfad)
-	  {
-		  Image drawable = new Image(display, canvas.getBounds());
-			GC gc = new GC(drawable);
-			canvas.print(gc);
-			ImageLoader loader = new ImageLoader();
-			loader.data = new org.eclipse.swt.graphics.ImageData[] {drawable.getImageData()};
-			loader.save(pfad, SWT.IMAGE_PNG);
-			drawable.dispose();
-			gc.dispose();
+public void saveAs(String pfad)
+{
+	Image drawable = new Image(display, canvas.getBounds());
+	GC gc = new GC(drawable);
+	canvas.print(gc);
+	ImageLoader loader = new ImageLoader();
+	loader.data = new org.eclipse.swt.graphics.ImageData[] {drawable.getImageData()};
+	loader.save(pfad, SWT.IMAGE_PNG);
+	drawable.dispose();
+	gc.dispose();
+ }
+  
+public void save()
+{
+	if(fileName==null) {
+	FileDialog fd = new FileDialog(shell, SWT.SAVE);
+	fd.setText("Save as");
+	fd.setFilterPath("/");
+	String[] filterExt = { "*.png"};
+	fd.setFilterExtensions(filterExt);
+	fileName = fd.open();}
+	Image drawable = new Image(display, canvas.getBounds());
+	GC gc = new GC(drawable);
+	canvas.print(gc);
+	ImageLoader loader = new ImageLoader();
+	loader.data = new org.eclipse.swt.graphics.ImageData[] {drawable.getImageData()};
+	loader.save(fileName, SWT.IMAGE_PNG);
+	drawable.dispose();
+	gc.dispose();
+}
+	  
+public void drawNewImage()
+{
+	canvas.addPaintListener(new PaintListener() { 
+	public void paintControl(PaintEvent e) { 
+	   	e.gc.fillRectangle(0, 0, ps.getX(),ps.getY());
+	    }
+	});
+}
+	  
+public void drawImage(Image i)
+{
+	canvas.addPaintListener(new PaintListener() { 
+	public void paintControl(PaintEvent e) { 
+	e.gc.drawImage(i, 0, 0);
+	}
+});
+canvas.redraw();
+}
 
-	  }
-	  
-	  public void save()
-	  {
-		  if(fileName==null) {
-		  FileDialog fd = new FileDialog(shell, SWT.SAVE);
-	        fd.setText("Save as");
-	        fd.setFilterPath("/");
-	        String[] filterExt = { "*.png"};
-	        fd.setFilterExtensions(filterExt);
-	        fileName = fd.open();}
-		  Image drawable = new Image(display, canvas.getBounds());
-			GC gc = new GC(drawable);
-			canvas.print(gc);
-			ImageLoader loader = new ImageLoader();
-			loader.data = new org.eclipse.swt.graphics.ImageData[] {drawable.getImageData()};
-			loader.save(fileName, SWT.IMAGE_PNG);
-			drawable.dispose();
-			gc.dispose();
-
-	  }
-	  
-	  public void drawNewImage()
-	  {
-		  canvas.addPaintListener(new PaintListener() { 
-			    public void paintControl(PaintEvent e) { 
-			    	
-			    
-			    	//e.gc.setForeground( rgb  );
-			  
-			    	//e.gc.drawPoint(x, y);
-			    	e.gc.fillRectangle(0, 0, ps.getX(),ps.getY());
-			    }
-			});
-	  }
-	  
-	  public void drawImage(Image i)
-	  {
-		  canvas.addPaintListener(new PaintListener() { 
-			    public void paintControl(PaintEvent e) { 
-			    	
-			    	e.gc.drawImage(i, 0, 0);
-			    	
-			    	
-			    }
-			});
-		 canvas.redraw();
-	  }
 public void drawLineImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
-		    	
-		    
-		    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
-		  
-		    	e.gc.drawLine(xk, yk, xg,yg);
-		    	
+		    e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
+		   	e.gc.drawLine(xk, yk, xg,yg);
 		    }
-		});
+	 });
 	 canvas.redraw();
 }
 
 public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
-		    		Color c =  new Color( ps.getColor().getRGB() );
-    			    	e.gc.setForeground( c );
-    	        		   e.gc.drawRectangle(xk, yk, xg-xk,yg-yk);
-    	     
-		    }
+		    	Color c =  new Color( ps.getColor().getRGB() );
+    		   	e.gc.setForeground( c );
+    	       e.gc.drawRectangle(xk, yk, xg-xk,yg-yk);
+    	    }
 		});
-
 canvas.redraw();
 }
 
 public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
-		    	
-   			    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
-   	        		   e.gc.drawOval(xk, yk, xg-xk,yg-yk);
-   			
-		    }
+		    e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
+   	        e.gc.drawOval(xk, yk, xg-xk,yg-yk);
+   			}
 		});
-
 canvas.redraw();
 }
 
 public void drawPointImage(Event event) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
-		    	
-  			    	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
-  	        		   e.gc.drawPoint(event.x,event.y);
-  			
-		    }
+		       	e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
+		       	e.gc.drawPoint(event.x,event.y);
+  			}
 		});
-
 canvas.redraw();
 }
 
-
- public void displayIt(){
-	  display = new Display();
+public void displayIt(){
+	  	display = new Display();
 	    shell = new Shell(display);
-	    
-	    
 	    ps = new PictureSettings();
 	    ps.setX(320);
 	    ps.setY(240);
 	    ps.setColor(new Color(0,0,0));
 	    shell.setText("PicSheepEditor");
-	    //shell.setLayout(new FillLayout());
-
 	    GridLayout gridLayout = new GridLayout(1,false);
         gridLayout.numColumns = 1;
-
-       
         shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         shell.setLayout(gridLayout);
-	    
-       // outerGroup = new Group(shell, SWT.NONE);
-
-        // Tell the group to stretch in all directions
-        /*outerGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        outerGroup.setLayout(new GridLayout(1, true));
-        outerGroup.setText("Image");
-*/
-        //FillLayout fl = new FillLayout(SWT.VERTICAL);
-        //shell.setLayout(fl);
-       scrolledComposite = new ScrolledComposite( shell,SWT.SINGLE | SWT.BORDER| SWT.H_SCROLL | SWT.V_SCROLL );
+	    scrolledComposite = new ScrolledComposite( shell,SWT.SINGLE | SWT.BORDER| SWT.H_SCROLL | SWT.V_SCROLL );
         GridData gridData;
         gridData = new GridData();
         gridData.horizontalAlignment = GridData.FILL;
-       gridData.verticalAlignment=GridData.FILL;
+        gridData.verticalAlignment=GridData.FILL;
         gridData.grabExcessHorizontalSpace = true;
         gridData.grabExcessVerticalSpace=true;
         scrolledComposite.setLayoutData(gridData);
- 
-      
-
-        // Set the minimum size
-        //scrolledComposite.setMinSize(400, 400);
-
-        // Expand both horizontally and vertically
-  
-        
-        //scrolledComposite.setExpandHorizontal( true );
-        //scrolledComposite.setExpandVertical( true );
-       // scrolledComposite.setMinSize(ps.getY(), ps.getX());
-        //scrolledComposite.setBounds(0, 0, ps.getY(), ps.getX());
-        
-       
-
-        
         outerGroup2 = new Group(shell, SWT.NONE);
-
-        // Tell the group to stretch in all directions
-       // outerGroup2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         outerGroup2.setLayout(new GridLayout(10, true));
         outerGroup2.setText("Tools");
-        
         GridData data1 = new GridData(SWT.FILL, SWT.BOTTOM, true, false);
-        
         data1.heightHint = 50;
         data1.verticalSpan = 1;
         outerGroup2.setLayoutData(data1);
-        
-       
-        
 	    canvas = new Canvas(scrolledComposite,SWT.NONE);
 	    canvas.setSize(ps.getX(), ps.getY());
 	    scrolledComposite.setContent(canvas);
-	  
-	    //scrolledComposite.setContent( canvas );
-	    
 	    shell.addListener( SWT.Resize, event -> {
-      	  System.out.println("resize");
-	    	
+	    	System.out.println("resize");
 	    	int width = shell.getClientArea().width;
-      	  //scrolledComposite.setMinSize( shell.computeSize( width, SWT.DEFAULT ) );
-      	  
-      	  int height=canvas.getClientArea().height;
-      	  scrolledComposite.setMinSize( scrolledComposite.computeSize(width,height));
-      	  
-      	  //scrolledComposite.setMinSize(width,height);
-      	  //  scrolledComposite.setMinSize(width, height);
-      
-	    } );
-	    
-	    /*shell.addListener( SWT.Resize, event -> {
-      	  int width = shell.getClientArea().width;
-      	  //scrolledComposite.setMinSize( shell.computeSize( width, SWT.DEFAULT ) );
-      	  
-      	  int height=canvas.getClientArea().height;
-      	  scrolledComposite.setMinSize( scrolledComposite.computeSize(width,SWT.DEFAULT));
-      	//  scrolledComposite.setMinSize(width, height);
-      } );
-*/
-	    
+	    	int height=canvas.getClientArea().height;
+	    	scrolledComposite.setMinSize( scrolledComposite.computeSize(width,height));
+	    });
 	    canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	    canvas.addPaintListener((PaintListener) new PaintListener() {
 	      public void paintControl(PaintEvent e) {
-	       // image = new Image(display, "DATEINAME");
-
-	        //e.gc.drawImage(image, 10, 10);
-
-	       
-	  
 	      }
 	    });
-	    
 	    canvas.addPaintListener((PaintListener) new PaintListener() {
-		      public void paintControl(PaintEvent e) {
-		     
-
-		        //Rectangle bounds = image.getBounds();
-		        //e.gc.drawLine(0,0,bounds.width,bounds.height);
-		        //e.gc.drawLine(0,bounds.height,bounds.width,0);
-		        
+		public void paintControl(PaintEvent e) {
 		    	  e.gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
-		          e.gc.fillRectangle(0, 0, 400, 200);
-		         
+		          e.gc.fillRectangle(0, 0, 400, 200);	         
 		      }
-		    });
-	    
+		    });	    
 	    Listener listenerDown = new Listener() {
-
-
-	        public void handleEvent(Event event) {
-	         
-	        	   System.out.println("Down");
-	        	   int xk,xg,yk,yg;
-	            
-	            if(ps.getX()>event.x&&ps.getY()>event.y) {
-	        	mouse = !mouse;
-	          
-	            if(!mouse&&viereck)
-	            {
+	    public void handleEvent(Event event) {
+	       System.out.println("Down");
+	       int xk,xg,yk,yg;
+	       if(ps.getX()>event.x&&ps.getY()>event.y) {
+	    	   mouse = !mouse;
+	           if(!mouse&&viereck)
+	           {
+	            	X = event.x;
+		            Y = event.y;
+	           }
+	           if(!mouse&&line)
+	           {
 	            	X = event.x;
 		            Y = event.y;
 	            
-	            }
-	            if(!mouse&&line)
-	            {
-	            	X = event.x;
-		            Y = event.y;
-	            
-	            }
-	            if(mouse&&viereck)
-	            {
+	           }
+	           if(mouse&&viereck)
+	           {
 	         	   if(X<event.x)
         		   {
         			   xk=X;
@@ -429,32 +269,19 @@ canvas.redraw();
         			   yg=Y;
         		   }	
         		   drawRectangleImage(event,xg,xk,yg,yk);
-        		  // GC gc = new GC(canvas);
-        		   
-        		   //gc.dispose(); 
-	            	
-	            		
-		            
-		            
-	            }
+        		}
 	            if(mouse&&line)
 	            {
-	         	   
-        			   xk=X;
-        			   xg=event.x;
-        		   
-        		   
-        			   yk=Y;
-        			   yg=event.y;
-        		   
-        		  
+	         	   xk=X;
+	         	   xg=event.x;
+        		   yk=Y;
+        		   yg=event.y;
         		   drawLineImage(event,xg,xk,yg,yk);
 	            }
 	            if(!mouse&&kreis)
 	            {
 	            	X = event.x;
 		            Y = event.y;
-	            
 	            }
 	            if(mouse&&kreis)
 	            {
@@ -479,21 +306,10 @@ canvas.redraw();
         			   yg=Y;
         		   }	
         		   drawCircleImage(event,xg,xk,yg,yk);
-        		  // GC gc = new GC(canvas);
-        		   
-        		   //gc.dispose(); 
-	            	
-	            		
-		            
-		            
-	            }
-	            
+        		}
 	            }}
-	        
 	      };
-	    
 	      Listener listenerMove = new Listener() {
-	     
 	          public void handleEvent(Event event) {
 	        	  int xk,xg,yk,yg;
 	              /*if ((event.stateMask & SWT.BUTTON1) == 0)
@@ -507,40 +323,27 @@ canvas.redraw();
 	        	   }
 	        	   if(mouse&&bleistift)
 	        	   	{
-	        		   
-	        		 
-	        			   xk=X;
-	        			   xg=event.x;
-	        		   
-	        		   
-	        		   
-	        			   yk=Y;
-	        			   yg=event.y;
-	        			   drawLineImage(event,xg,xk,yg,yk);
-	        			   X = event.x;
-				            Y = event.y;
-	   		    	//gc.drawImage(image, 0, 0);
-	        		  /* GC gc = new GC(canvas);
-	        		   gc.setForeground( new Color( ps.getColor().getRGB() ) );
-	        		   gc.drawLine(X, Y, event.x,event.y);
-	        		   gc.dispose(); */
-	        		  
-	        	   }
+	        		   xk=X;
+	        		   xg=event.x;
+	        		   yk=Y;
+	        		   yg=event.y;
+	        		   drawLineImage(event,xg,xk,yg,yk);
+	        		   X = event.x;
+				       Y = event.y;
+	   		    	 	}
 	        	   }
 	          }
-	        };
+	    };
 	    canvas.addListener(SWT.MouseDown, listenerDown);
 	    canvas.addListener(SWT.MouseMove, listenerMove);
 	    canvas.pack();
 	    final Button button = new Button(outerGroup2, SWT.PUSH);
 	    button.setText("Pencil");
-	    
 	    button.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-			
 				bleistift = !bleistift;
 			}
 
@@ -549,15 +352,11 @@ canvas.redraw();
 				// TODO Auto-generated method stub
 				bleistift = !bleistift;
 			}
-
-	       
-	      });
+});
 	    
 	    final Button buttonViereck = new Button(outerGroup2, SWT.PUSH);
 	    buttonViereck.setText("Square");
-	    
 	    buttonViereck.addSelectionListener(new SelectionListener() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
@@ -568,15 +367,11 @@ canvas.redraw();
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
-
-	       
-	      });
+	    });
 	    
 	    final Button buttonKreis = new Button(outerGroup2, SWT.PUSH);
 	    buttonKreis.setText("Circle");
-	    
 	    buttonKreis.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -591,13 +386,10 @@ canvas.redraw();
 				// TODO Auto-generated method stub
 				
 			}
-
-	       
 	      });
 	    
 	    final Button buttonLine = new Button(outerGroup2, SWT.PUSH);
 	    buttonLine.setText("Line");
-	    
 	    buttonLine.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -612,25 +404,17 @@ canvas.redraw();
 				// TODO Auto-generated method stub
 				
 			}
-
-	       
-	      });
+	    });
 	 
-	    
-	    
 	    final Button buttonColor = new Button(outerGroup2, SWT.PUSH);
 	    buttonColor.setText("Color");
-	    
 	    buttonColor.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
 				save();
-   		    	
-				
-				ColorDialog dlg = new ColorDialog(shell);
+   		    	ColorDialog dlg = new ColorDialog(shell);
 			    dlg.setRGB(new RGB(0, 0, 255));
 			    RGB rgb = dlg.open();
 			    if (rgb != null) {
@@ -640,9 +424,7 @@ canvas.redraw();
 			      ps.setColor(color);
 			      //color.dispose();
 			    }
-			    
 			    Image image = new Image(display,fileName);
-	   		    
    		    	drawImage(image);
 			}
 
@@ -651,14 +433,9 @@ canvas.redraw();
 				// TODO Auto-generated method stub
 				
 			}
-
-	       
 	      });
 	    
 	    Menu menu, fileMenu, effectMenu, viewMenu;
-
-	    
-
 	    menu = new Menu(shell, SWT.BAR);
 	    MenuItem fileItem = new MenuItem(menu, SWT.CASCADE);
 	    fileItem.setText("File");
@@ -668,7 +445,6 @@ canvas.redraw();
 	    viewItem.setText("View");
 	    MenuItem helpItem = new MenuItem(menu, SWT.CASCADE);
 	    helpItem.setText("Help");
-
 	    fileMenu = new Menu(menu);
 	    fileItem.setMenu(fileMenu);
 	    MenuItem newItem = new MenuItem(fileMenu, SWT.NONE);
@@ -677,7 +453,6 @@ canvas.redraw();
 	    openItem.setText("Open...");
 	    MenuItem saveItem = new MenuItem(fileMenu, SWT.NONE);
 	    saveItem.setText("Save");
-	
 	    new MenuItem(fileMenu, SWT.SEPARATOR);
 	    MenuItem pageSetupItem = new MenuItem(fileMenu, SWT.NONE);
 	    pageSetupItem.setText("Page Setup...");
@@ -686,31 +461,26 @@ canvas.redraw();
 	    new MenuItem(fileMenu, SWT.SEPARATOR);
 	    MenuItem exitItem = new MenuItem(fileMenu, SWT.NONE);
 	    exitItem.setText("Exit");
-
 	    effectMenu = new Menu(menu);
 	    effectItem.setMenu(effectMenu);
 	    MenuItem negativItem = new MenuItem(effectMenu, SWT.NONE);
 	    negativItem.setText("Negativ");
 	    MenuItem grayscaleItem = new MenuItem(effectMenu, SWT.NONE);
 	    grayscaleItem.setText("Grayscale");
-
 	    viewMenu = new Menu(menu);
 	    viewItem.setMenu(viewMenu);
 	    MenuItem toolItem = new MenuItem(viewMenu, SWT.NONE);
 	    toolItem.setText("ToolBars");
 	    MenuItem fontItem = new MenuItem(viewMenu, SWT.NONE);
 	    fontItem.setText("Font");
-
-	    //exitItem.addSelectionListener(new MenuItemListener());
-	    
 	    shell.setMenuBar(menu);
 	    
 	    newItem.addSelectionListener(new MenuItemListener());
 	    saveItem.addSelectionListener(new MenuItemListener());
-	   openItem.addSelectionListener(new MenuItemListener());
-	   exitItem.addSelectionListener(new MenuItemListener());
-	   negativItem.addSelectionListener(new MenuItemListener());
-	   grayscaleItem.addSelectionListener(new MenuItemListener());
+	    openItem.addSelectionListener(new MenuItemListener());
+	    exitItem.addSelectionListener(new MenuItemListener());
+	    negativItem.addSelectionListener(new MenuItemListener());
+	    grayscaleItem.addSelectionListener(new MenuItemListener());
 	    scrolledComposite.pack();
 	  
 	    shell.pack();
@@ -730,56 +500,34 @@ class MenuItemListener extends SelectionAdapter {
 	  if (((MenuItem) event.widget).getText().equals("New")) {
 	  NewDialog nd = new NewDialog();
 	  ps = nd.show(display);
-	  
-	  //canvas = new Canvas(scrolledComposite,SWT.NONE);
-	    canvas.setSize(ps.getX(), ps.getY());
-	    
-	  /*GC gc = new GC(canvas);
-	  gc.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
-	   gc.fillRectangle(0, 0, ps.getX(),ps.getY());
-	   gc.dispose(); 	*/
-	    canvas.setBounds(0, 0, ps.getX(), ps.getY());
-	    drawNewImage();
-		canvas.redraw();
-	   
+	  canvas.setSize(ps.getX(), ps.getY());
+	  canvas.setBounds(0, 0, ps.getX(), ps.getY());
+	  drawNewImage();
+	  canvas.redraw();
 	  }
 	  else if (((MenuItem) event.widget).getText().equals("Save")) {
 		  System.out.println("save");
-		  /*Image drawable = new Image(display, canvas.getBounds());
-			GC gc = new GC(drawable);
-			canvas.print(gc);
-			ImageLoader loader = new ImageLoader();
-			loader.data = new org.eclipse.swt.graphics.ImageData[] {drawable.getImageData()};
-			loader.save("/home/jon/Bilder/swt.png", SWT.IMAGE_PNG);
-			drawable.dispose();
-			gc.dispose();*/
 		  FileDialog fd = new FileDialog(shell, SWT.SAVE);
-	        fd.setText("Save as");
-	        fd.setFilterPath("/");
-	        String[] filterExt = { "*.png"};
-	        fd.setFilterExtensions(filterExt);
-	        String selected = fd.open();
-	        System.out.println(selected);
+	      fd.setText("Save as");
+	      fd.setFilterPath("/");
+	      String[] filterExt = { "*.png"};
+	      fd.setFilterExtensions(filterExt);
+	      String selected = fd.open();
+	      System.out.println(selected);
 		  saveAs(selected);
-
-
-
-		  
-	  }
+		  }
 	  else if (((MenuItem) event.widget).getText().equals("Open...")) {
-		 System.out.println("OpenDialog");
-		  
+		  System.out.println("OpenDialog");
 		  FileDialog fd = new FileDialog(shell, SWT.OPEN);
-	        fd.setText("Open");
-	        fd.setFilterPath("/");
-	        String[] filterExt = { "*.png"};
-	        fd.setFilterExtensions(filterExt);
-	        String selected = fd.open();
-	        System.out.println(selected);
-	        Image image = new Image(display,selected);
+	      fd.setText("Open");
+	      fd.setFilterPath("/");
+	      String[] filterExt = { "*.png"};
+	      fd.setFilterExtensions(filterExt);
+	      String selected = fd.open();
+	      System.out.println(selected);
+	      Image image = new Image(display,selected);
    		    
-		    	drawImage(image);
-	  
+		  drawImage(image);
 	  }
 	  
 	  else if (((MenuItem) event.widget).getText().equals("Exit")) {
@@ -787,31 +535,16 @@ class MenuItemListener extends SelectionAdapter {
 	  }
 	  else if (((MenuItem) event.widget).getText().equals("Negativ")) {
 		  System.out.println("negativ");
-		  
 		  save();
-		    	
-			
-			
-		    
-		    Image drawable = new Image(display,fileName);
+		  Image drawable = new Image(display,fileName);
 		  
-		  //Image drawable = new Image(display, canvas.getBounds());
-		 Image j = inverse(drawable);
-		
+		  Image j = inverse(drawable);
 	  }
 	  else if (((MenuItem) event.widget).getText().equals("Grayscale")) {
 		  System.out.println("grayscale");
-		  
 		  save();
-		    	
-			
-			
-		    
-		    Image drawable = new Image(display,"/home/jon/Bilder/swt.png");
-		  
-		  //Image drawable = new Image(display, canvas.getBounds());
-		 Image j = grayscale(drawable);
-		
+		  Image drawable = new Image(display,"/home/jon/Bilder/swt.png");
+		  Image j = grayscale(drawable);
 	  }
 	 }
 	  }
