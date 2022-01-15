@@ -46,13 +46,21 @@ public class MainWindow {
 	Boolean line = false;
 	PictureSettings ps;
 	String fileName;
+	String fileNameSource;
 	Canvas canvas ;
 	Display display;
 	Group outerGroup,outerGroup2;
 	Shell shell;
 	ScrolledComposite scrolledComposite;
+	int zaehler = 0;
 	
-	
+public void saveForReturn()
+{
+	String zahl = Integer.toString(zaehler);
+	fileName = fileNameSource+zahl;
+
+	zaehler++;
+}
 
 public Image inverse(Image i)
 {
@@ -103,7 +111,14 @@ public void save()
 	fd.setFilterPath("/");
 	String[] filterExt = { "*.png"};
 	fd.setFilterExtensions(filterExt);
-	fileName = fd.open();}
+	fileNameSource = fd.open();
+	fileNameSource = fileNameSource.substring(0, fileNameSource.length()-4);
+	}
+	String zahl = Integer.toString(zaehler);
+	fileName = fileNameSource+zahl;
+	fileName = fileName + ".png";
+	zaehler++;
+	
 	Image drawable = new Image(display, canvas.getBounds());
 	GC gc = new GC(drawable);
 	canvas.print(gc);
