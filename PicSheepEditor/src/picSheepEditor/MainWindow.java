@@ -52,15 +52,7 @@ public class MainWindow {
 	Shell shell;
 	ScrolledComposite scrolledComposite;
 	
-	public void drawInversePoint(Image i)
-	{
-		canvas.addPaintListener(new PaintListener() { 
-			public void paintControl(PaintEvent e) { 
-				e.gc.drawImage(i, 0, 0);
-			}
-		});
-		canvas.redraw();
-	  }
+	
 
 public Image inverse(Image i)
 {
@@ -80,14 +72,14 @@ public Image inverse(Image i)
         }
 	}
 	Image j =new Image( i.getDevice(), imageData );
-	drawInversePoint(j);
+	drawImage(j);
 	return j; 
 }
 	
 public Image grayscale(Image i)
 {
 	Image j = new Image(display, i, SWT.IMAGE_GRAY);
-	drawInversePoint(j);
+	drawImage(j);
 	return j; 
 }
 
