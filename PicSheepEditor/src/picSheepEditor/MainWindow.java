@@ -54,13 +54,7 @@ public class MainWindow {
 	ScrolledComposite scrolledComposite;
 	int zaehler = 0;
 	
-public void saveForReturn()
-{
-	String zahl = Integer.toString(zaehler);
-	fileName = fileNameSource+zahl;
 
-	zaehler++;
-}
 
 public Image inverse(Image i)
 {
@@ -156,6 +150,7 @@ public void drawLineImage(Event event,int xg, int xk,int yg , int yk) {
 		    }
 	 });
 	 canvas.redraw();
+	 
 }
 
 public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
@@ -167,6 +162,7 @@ public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
     	    }
 		});
 canvas.redraw();
+save();
 }
 
 public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
@@ -177,6 +173,7 @@ public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
    			}
 		});
 canvas.redraw();
+save();
 }
 
 public void drawPointImage(Event event) {
@@ -187,6 +184,7 @@ public void drawPointImage(Event event) {
   			}
 		});
 canvas.redraw();
+save();
 }
 
 public void displayIt(){
@@ -356,8 +354,11 @@ public void displayIt(){
 				if(bleistift)
 					button.setBackground(new Color(0,255,0));
 				else
+					{save();
+					canvas.redraw();
 					button.setBackground(new Color(255,0,0));
-			}
+					}
+					}
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
