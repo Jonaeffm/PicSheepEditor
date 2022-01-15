@@ -339,12 +339,17 @@ public void displayIt(){
 	    canvas.pack();
 	    final Button button = new Button(outerGroup2, SWT.PUSH);
 	    button.setText("Pencil");
+	    button.setBackground(new Color(255,0,0));
 	    button.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 				bleistift = !bleistift;
+				if(bleistift)
+					button.setBackground(new Color(0,255,0));
+				else
+					button.setBackground(new Color(255,0,0));
 			}
 
 			@Override
@@ -356,12 +361,17 @@ public void displayIt(){
 	    
 	    final Button buttonViereck = new Button(outerGroup2, SWT.PUSH);
 	    buttonViereck.setText("Square");
+	    buttonViereck.setBackground(new Color(255,0,0));
 	    buttonViereck.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("square");
 				viereck = !viereck;
+				if(viereck)
+					buttonViereck.setBackground(new Color(0,255,0));
+				else
+					buttonViereck.setBackground(new Color(255,0,0));
 			}
 
 			@Override
@@ -372,6 +382,7 @@ public void displayIt(){
 	    
 	    final Button buttonKreis = new Button(outerGroup2, SWT.PUSH);
 	    buttonKreis.setText("Circle");
+	    buttonKreis.setBackground(new Color(255,0,0));
 	    buttonKreis.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -379,6 +390,12 @@ public void displayIt(){
 				// TODO Auto-generated method stub
 				System.out.println("Circle");
 				kreis = !kreis;
+				if(kreis)
+				{
+					  buttonKreis.setBackground(new Color(0,255,0));
+				}
+				else
+					 buttonKreis.setBackground(new Color(255,0,0));
 			}
 
 			@Override
@@ -390,6 +407,7 @@ public void displayIt(){
 	    
 	    final Button buttonLine = new Button(outerGroup2, SWT.PUSH);
 	    buttonLine.setText("Line");
+	    buttonLine.setBackground(new Color(255,0,0));
 	    buttonLine.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -397,6 +415,10 @@ public void displayIt(){
 				// TODO Auto-generated method stub
 				System.out.println("Circle");
 				line = !line;
+				if(line)
+					buttonLine.setBackground(new Color(0,255,0));
+				else
+					buttonLine.setBackground(new Color(255,0,0));
 			}
 
 			@Override
