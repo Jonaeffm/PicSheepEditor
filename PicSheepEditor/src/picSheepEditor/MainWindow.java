@@ -99,6 +99,8 @@ public void saveAs(String pfad)
   
 public void save()
 {
+	zaehler++;
+	
 	if(fileName==null) {
 	FileDialog fd = new FileDialog(shell, SWT.SAVE);
 	fd.setText("Save as");
@@ -111,7 +113,7 @@ public void save()
 	String zahl = Integer.toString(zaehler);
 	fileName = fileNameSource+zahl;
 	fileName = fileName + ".png";
-	zaehler++;
+	
 	
 	Image drawable = new Image(display, canvas.getBounds());
 	GC gc = new GC(drawable);
@@ -465,14 +467,14 @@ public void displayIt(){
 			}
 	      });
 	    
-	    Menu menu, fileMenu, effectMenu, viewMenu;
+	    Menu menu, fileMenu, effectMenu, editMenu;
 	    menu = new Menu(shell, SWT.BAR);
 	    MenuItem fileItem = new MenuItem(menu, SWT.CASCADE);
 	    fileItem.setText("File");
 	    MenuItem effectItem = new MenuItem(menu, SWT.CASCADE);
 	    effectItem.setText("Effects");
-	    MenuItem viewItem = new MenuItem(menu, SWT.CASCADE);
-	    viewItem.setText("View");
+	    MenuItem editItem = new MenuItem(menu, SWT.CASCADE);
+	    editItem.setText("Edit");
 	    MenuItem helpItem = new MenuItem(menu, SWT.CASCADE);
 	    helpItem.setText("Help");
 	    fileMenu = new Menu(menu);
@@ -497,11 +499,11 @@ public void displayIt(){
 	    negativItem.setText("Negativ");
 	    MenuItem grayscaleItem = new MenuItem(effectMenu, SWT.NONE);
 	    grayscaleItem.setText("Grayscale");
-	    viewMenu = new Menu(menu);
-	    viewItem.setMenu(viewMenu);
-	    MenuItem toolItem = new MenuItem(viewMenu, SWT.NONE);
-	    toolItem.setText("ToolBars");
-	    MenuItem fontItem = new MenuItem(viewMenu, SWT.NONE);
+	    editMenu = new Menu(menu);
+	    editItem.setMenu(editMenu);
+	    MenuItem backItem = new MenuItem(editMenu, SWT.NONE);
+	    backItem.setText("Back");
+	    MenuItem fontItem = new MenuItem(editMenu, SWT.NONE);
 	    fontItem.setText("Font");
 	    shell.setMenuBar(menu);
 	    
@@ -511,6 +513,7 @@ public void displayIt(){
 	    exitItem.addSelectionListener(new MenuItemListener());
 	    negativItem.addSelectionListener(new MenuItemListener());
 	    grayscaleItem.addSelectionListener(new MenuItemListener());
+	    backItem.addSelectionListener(new MenuItemListener());
 	    scrolledComposite.pack();
 	  
 	    shell.pack();
@@ -575,6 +578,17 @@ class MenuItemListener extends SelectionAdapter {
 		  save();
 		  Image drawable = new Image(display,"/home/jon/Bilder/swt.png");
 		  Image j = grayscale(drawable);
+	  }
+	  else if (((MenuItem) event.widget).getText().equals("Back")) {
+		  System.out.println("back");
+		  if(zaehler>0)
+		  {
+			  zaehler--;
+			  String selected = fileNameSource+Integer.toString(zaehler)+".png";
+			  Image image = new Image(display,selected);
+	   		    
+			  drawImage(image);
+		  }
 	  }
 	 }
 	  }
