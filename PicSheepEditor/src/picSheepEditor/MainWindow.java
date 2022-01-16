@@ -163,8 +163,9 @@ public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
     	       e.gc.drawRectangle(xk, yk, xg-xk,yg-yk);
     	    }
 		});
-canvas.redraw();
-save();
+	 save();
+	 canvas.redraw();
+
 }
 
 public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
@@ -174,8 +175,9 @@ public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
    	        e.gc.drawOval(xk, yk, xg-xk,yg-yk);
    			}
 		});
-canvas.redraw();
-save();
+	 save();
+	 canvas.redraw();
+
 }
 
 public void drawPointImage(Event event) {
@@ -185,8 +187,9 @@ public void drawPointImage(Event event) {
 		       	e.gc.drawPoint(event.x,event.y);
   			}
 		});
-canvas.redraw();
-save();
+	 save();
+	 canvas.redraw();
+
 }
 
 public void displayIt(){
