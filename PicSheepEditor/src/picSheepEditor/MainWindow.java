@@ -52,6 +52,7 @@ public class MainWindow {
 	Boolean kreis = false;
 	Boolean line = false;
 	Boolean fviereck=false;
+	Boolean fkreis=false;
 	
 	//settings of actual picture
 	PictureSettings ps;
@@ -217,6 +218,18 @@ public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
 		    e.gc.setForeground( new Color( ps.getColor().getRGB() ) );
    	        e.gc.drawOval(xk, yk, xg-xk,yg-yk);
    			}
+		});
+	 save();
+	 canvas.redraw();
+
+}
+
+public void drawFCircleImage(Event event,int xg, int xk,int yg , int yk) {
+	 canvas.addPaintListener(new PaintListener() { 
+		    public void paintControl(PaintEvent e) { 
+		    e.gc.setBackground( new Color( ps.getColor().getRGB() ) );
+  	        e.gc.fillOval(xk, yk, xg-xk,yg-yk);
+  			}
 		});
 	 save();
 	 canvas.redraw();
@@ -409,6 +422,37 @@ public void displayIt(){
         		   }	
         		   drawCircleImage(event,xg,xk,yg,yk);
         		}
+	            
+	            if(!mouse&&fkreis)
+	            {
+	            	X = event.x;
+		            Y = event.y;
+	            }
+	            if(mouse&&fkreis)
+	            {
+	         	   if(X<event.x)
+        		   {
+        			   xk=X;
+        			   xg=event.x;
+        		   }
+        		   else
+        		   {
+        			   xk=event.x;
+        			   xg=X;
+        		   }
+        		   if(Y<event.y)
+        		   {
+        			   yk=Y;
+        			   yg=event.y;
+        		   }
+        		   else
+        		   {
+        			   yk=event.y;
+        			   yg=Y;
+        		   }	
+        		   drawFCircleImage(event,xg,xk,yg,yk);
+        		}
+	            
 	            }}
 	      };
 	      
@@ -531,6 +575,31 @@ public void displayIt(){
 				}
 				else
 					 buttonKreis.setBackground(new Color(255,0,0));
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+	      });
+	    
+	    final Button buttonFKreis = new Button(outerGroup2, SWT.PUSH);
+	    buttonFKreis.setText("fill Circle");
+	    buttonFKreis.setBackground(new Color(255,0,0));
+	    buttonFKreis.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("FCircle");
+				fkreis = !fkreis;
+				if(fkreis)
+				{
+					  buttonFKreis.setBackground(new Color(0,255,0));
+				}
+				else
+					 buttonFKreis.setBackground(new Color(255,0,0));
 			}
 
 			@Override
