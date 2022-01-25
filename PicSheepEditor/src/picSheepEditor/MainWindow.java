@@ -37,28 +37,47 @@ import org.eclipse.swt.widgets.Shell;
 
 public class MainWindow {
 	
+	//position of click
 	int X,Y,newX,newY;
+	
+	//load image with this
 	Image image;
+	
+	//is mouse button?
 	Boolean mouse=false;
+	
+	//boolean for draw
 	Boolean bleistift = false;
 	Boolean viereck = false;
 	Boolean kreis = false;
 	Boolean line = false;
 	Boolean fviereck=false;
+	
+	//settings of actual picture
 	PictureSettings ps;
+	
+	//filename for save automatically
 	String fileName;
 	String fileNameSource;
+	
+	//canvas to draw
 	Canvas canvas ;
+	
+	//display object of SWT
 	Display display;
+	
+	//group and shell objects (SWT)
 	Group outerGroup,outerGroup2;
 	Shell shell;
 	ScrolledComposite scrolledComposite;
+	
+	//counter for saving automatically
 	int zaehler = 0;
 	
-
-
+//invert colors
 public Image inverse(Image i)
 {
+	
 	 GC gc = new GC(i);
 	 ImageData imageData= i.getImageData();;
 	 int pixelValue ;
@@ -79,6 +98,7 @@ public Image inverse(Image i)
 	return j; 
 }
 	
+//grayscale
 public Image grayscale(Image i)
 {
 	Image j = new Image(display, i, SWT.IMAGE_GRAY);
@@ -86,6 +106,7 @@ public Image grayscale(Image i)
 	return j; 
 }
 
+//save as
 public void saveAs(String pfad)
 {
 	Image drawable = new Image(display, canvas.getBounds());
@@ -97,7 +118,8 @@ public void saveAs(String pfad)
 	drawable.dispose();
 	gc.dispose();
  }
-  
+ 
+//save automatically
 public void save()
 {
 	zaehler++;
@@ -125,7 +147,8 @@ public void save()
 	drawable.dispose();
 	gc.dispose();
 }
-	  
+
+//new image
 public void drawNewImage()
 {
 	canvas.addPaintListener(new PaintListener() { 
@@ -134,7 +157,8 @@ public void drawNewImage()
 	    }
 	});
 }
-	  
+
+//load image
 public void drawImage(Image i)
 {
 	canvas.addPaintListener(new PaintListener() { 
@@ -145,6 +169,8 @@ public void drawImage(Image i)
 canvas.redraw();
 }
 
+
+//draw line
 public void drawLineImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
@@ -156,6 +182,7 @@ public void drawLineImage(Event event,int xg, int xk,int yg , int yk) {
 	 
 }
 
+//draw rectangle
 public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
@@ -169,6 +196,7 @@ public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 
 }
 
+//draw filled rectangle
 public void drawFRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
@@ -182,6 +210,7 @@ public void drawFRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 
 }
 
+//draw circle
 public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
@@ -194,6 +223,7 @@ public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
 
 }
 
+//draw point
 public void drawPointImage(Event event) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
@@ -206,14 +236,23 @@ public void drawPointImage(Event event) {
 
 }
 
+//main window
 public void displayIt(){
+		
+		//SWT objects
 	  	display = new Display();
 	    shell = new Shell(display);
+	    
+	    //settings of picture
 	    ps = new PictureSettings();
 	    ps.setX(320);
 	    ps.setY(240);
 	    ps.setColor(new Color(0,0,0));
+	    
+	    //shell text
 	    shell.setText("PicSheepEditor");
+	    
+	    //SWT objects
 	    GridLayout gridLayout = new GridLayout(1,false);
         gridLayout.numColumns = 1;
         shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -233,8 +272,12 @@ public void displayIt(){
         data1.heightHint = 50;
         data1.verticalSpan = 1;
         outerGroup2.setLayoutData(data1);
+        
+        //canvas to paint
 	    canvas = new Canvas(scrolledComposite,SWT.NONE);
 	    canvas.setSize(ps.getX(), ps.getY());
+	    
+	    //SWT Objects
 	    scrolledComposite.setContent(canvas);
 	    shell.addListener( SWT.Resize, event -> {
 	    	System.out.println("resize");
@@ -252,7 +295,9 @@ public void displayIt(){
 		    	  e.gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
 		          e.gc.fillRectangle(0, 0, 400, 200);	         
 		      }
-		    });	    
+		    });	
+	    
+	    //listener for mouse button
 	    Listener listenerDown = new Listener() {
 	    public void handleEvent(Event event) {
 	       System.out.println("Down");
@@ -366,6 +411,8 @@ public void displayIt(){
         		}
 	            }}
 	      };
+	      
+	      //listener mouse movement
 	      Listener listenerMove = new Listener() {
 	          public void handleEvent(Event event) {
 	        	  int xk,xg,yk,yg;
@@ -395,6 +442,7 @@ public void displayIt(){
 	    canvas.addListener(SWT.MouseMove, listenerMove);
 	    canvas.pack();
 	    
+	    //buttons for drawing
 	    final Button btnFViereck = new Button(outerGroup2, SWT.PUSH);
 	    btnFViereck.setText("fill rectangle");
 	    btnFViereck.setBackground(new Color(255,0,0));
@@ -544,6 +592,7 @@ public void displayIt(){
 			}
 	      });
 	    
+	    //menu
 	    Menu menu, fileMenu, effectMenu, editMenu;
 	    menu = new Menu(shell, SWT.BAR);
 	    MenuItem fileItem = new MenuItem(menu, SWT.CASCADE);
@@ -604,7 +653,7 @@ public void displayIt(){
 }
  
 
- 
+//menu 
 class MenuItemListener extends SelectionAdapter {
 	  public void widgetSelected(SelectionEvent event) {
 	  if (((MenuItem) event.widget).getText().equals("New")) {
