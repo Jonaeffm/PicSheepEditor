@@ -487,30 +487,7 @@ public void displayIt(){
 	    canvas.pack();
 	    
 	    //buttons for drawing
-	    final Button btnFViereck = new Button(outerGroup2, SWT.PUSH);
-	    btnFViereck.setText("fill rectangle");
-	    btnFViereck.setBackground(new Color(255,0,0));
-	    btnFViereck.addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				fviereck = !fviereck;
-				if(fviereck)
-					btnFViereck.setBackground(new Color(0,255,0));
-				else
-					{save();
-					canvas.redraw();
-					btnFViereck.setBackground(new Color(255,0,0));
-					}
-					}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				fviereck = !fviereck;
-			}
-});
+	    
 	    
 	    
 	    final Button button = new Button(outerGroup2, SWT.PUSH);
@@ -558,6 +535,31 @@ public void displayIt(){
 				// TODO Auto-generated method stub
 			}
 	    });
+	    
+	    final Button btnFViereck = new Button(outerGroup2, SWT.PUSH);
+	    btnFViereck.setText("fill rectangle");
+	    btnFViereck.setBackground(new Color(255,0,0));
+	    btnFViereck.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				fviereck = !fviereck;
+				if(fviereck)
+					btnFViereck.setBackground(new Color(0,255,0));
+				else
+					{save();
+					canvas.redraw();
+					btnFViereck.setBackground(new Color(255,0,0));
+					}
+					}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				fviereck = !fviereck;
+			}
+});
 	    
 	    final Button buttonKreis = new Button(outerGroup2, SWT.PUSH);
 	    buttonKreis.setText("Circle");

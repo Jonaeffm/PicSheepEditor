@@ -20,7 +20,7 @@ public class NewDialog {
 	public static PictureSettings show(Display display1)
 	{	//Display display1 = new Display();
     Shell shell = new Shell(display1);
-    shell.setText("My First SWT GUI");
+    shell.setText("New");
     shell.setSize(500, 100);
 
     GridLayout gridLayout = new GridLayout();
@@ -56,17 +56,37 @@ public class NewDialog {
 
       public void widgetSelected(SelectionEvent event) {
         ps = new PictureSettings();
+        try
+        {
         ps.setX(Integer.parseInt(widthText.getText()));
         ps.setY(Integer.parseInt(hightText.getText()));
         ps.setColor(new Color(0,0,0));
+        }
+        catch(Exception e)
+        {
+        	System.out.println("error!");
+        	ps.setX(640);
+            ps.setY(480);
+            ps.setColor(new Color(0,0,0));
+        }
         shell.dispose();
       }
 
       public void widgetDefaultSelected(SelectionEvent event) {
     	  ps = new PictureSettings();
+    	  try
+          {
           ps.setX(Integer.parseInt(widthText.getText()));
           ps.setY(Integer.parseInt(hightText.getText()));
           ps.setColor(new Color(0,0,0));
+          }
+          catch(Exception e)
+          {
+          	System.out.println("error!");
+          	ps.setX(640);
+            ps.setY(480);
+            ps.setColor(new Color(0,0,0));
+          }
           shell.dispose();
       }
     });
