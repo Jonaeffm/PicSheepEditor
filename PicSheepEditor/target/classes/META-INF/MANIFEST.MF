@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Built-By: jon
 Build-Jdk: 16.0.2
 Class-Path: dependency/org.eclipse.swt.gtk.linux.x86_64-3.117.0.jar depe
- ndency/org.eclipse.swt-3.117.0.jar
+ ndency/org.eclipse.swt-3.118.0.jar
 Main-Class: picSheepEditor.Main
 Created-By: Maven Integration for Eclipse
 

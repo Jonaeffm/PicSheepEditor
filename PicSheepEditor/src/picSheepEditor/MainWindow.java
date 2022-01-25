@@ -44,6 +44,7 @@ public class MainWindow {
 	Boolean viereck = false;
 	Boolean kreis = false;
 	Boolean line = false;
+	Boolean fviereck=false;
 	PictureSettings ps;
 	String fileName;
 	String fileNameSource;
@@ -168,6 +169,19 @@ public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 
 }
 
+public void drawFRectangleImage(Event event,int xg, int xk,int yg , int yk) {
+	 canvas.addPaintListener(new PaintListener() { 
+		    public void paintControl(PaintEvent e) { 
+		    	Color c =  new Color( ps.getColor().getRGB() );
+   		   	e.gc.setBackground( c );
+   	       e.gc.fillRectangle(xk, yk, xg-xk,yg-yk);
+   	    }
+		});
+	 save();
+	 canvas.redraw();
+
+}
+
 public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
@@ -250,6 +264,13 @@ public void displayIt(){
 	            	X = event.x;
 		            Y = event.y;
 	           }
+	           
+	           if(!mouse&&fviereck)
+	           {
+	            	X = event.x;
+		            Y = event.y;
+	           }
+	           
 	           if(!mouse&&line)
 	           {
 	            	X = event.x;
@@ -280,6 +301,32 @@ public void displayIt(){
         		   }	
         		   drawRectangleImage(event,xg,xk,yg,yk);
         		}
+	           
+	           if(mouse&&fviereck)
+	           {
+	         	   if(X<event.x)
+        		   {
+        			   xk=X;
+        			   xg=event.x;
+        		   }
+        		   else
+        		   {
+        			   xk=event.x;
+        			   xg=X;
+        		   }
+        		   if(Y<event.y)
+        		   {
+        			   yk=Y;
+        			   yg=event.y;
+        		   }
+        		   else
+        		   {
+        			   yk=event.y;
+        			   yg=Y;
+        		   }	
+        		   drawFRectangleImage(event,xg,xk,yg,yk);
+        		}
+	           
 	            if(mouse&&line)
 	            {
 	         	   xk=X;
@@ -347,6 +394,33 @@ public void displayIt(){
 	    canvas.addListener(SWT.MouseDown, listenerDown);
 	    canvas.addListener(SWT.MouseMove, listenerMove);
 	    canvas.pack();
+	    
+	    final Button btnFViereck = new Button(outerGroup2, SWT.PUSH);
+	    btnFViereck.setText("fill rectangle");
+	    btnFViereck.setBackground(new Color(255,0,0));
+	    btnFViereck.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				fviereck = !fviereck;
+				if(fviereck)
+					btnFViereck.setBackground(new Color(0,255,0));
+				else
+					{save();
+					canvas.redraw();
+					btnFViereck.setBackground(new Color(255,0,0));
+					}
+					}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				fviereck = !fviereck;
+			}
+});
+	    
+	    
 	    final Button button = new Button(outerGroup2, SWT.PUSH);
 	    button.setText("Pencil");
 	    button.setBackground(new Color(255,0,0));
