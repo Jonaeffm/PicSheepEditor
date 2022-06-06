@@ -123,8 +123,8 @@ public void saveAs(String pfad)
 //save automatically
 public void save()
 {
+
 	zaehler++;
-	
 	if(fileName==null) {
 	FileDialog fd = new FileDialog(shell, SWT.SAVE);
 	fd.setText("Save as");
@@ -147,6 +147,7 @@ public void save()
 	loader.save(fileName, SWT.IMAGE_PNG);
 	drawable.dispose();
 	gc.dispose();
+	
 }
 
 //new image
@@ -180,6 +181,7 @@ public void drawLineImage(Event event,int xg, int xk,int yg , int yk) {
 		    }
 	 });
 	 canvas.redraw();
+	 save();
 	 
 }
 
@@ -194,7 +196,7 @@ public void drawRectangleImage(Event event,int xg, int xk,int yg , int yk) {
 		});
 	 save();
 	 canvas.redraw();
-
+	 
 }
 
 //draw filled rectangle
