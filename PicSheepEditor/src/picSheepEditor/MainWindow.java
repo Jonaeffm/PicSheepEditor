@@ -180,6 +180,7 @@ public void drawLineImage(Event event,int xg, int xk,int yg , int yk) {
 		   	e.gc.drawLine(xk, yk, xg,yg);
 		    }
 	 });
+	 save();
 	 canvas.redraw();
 	 
 }
