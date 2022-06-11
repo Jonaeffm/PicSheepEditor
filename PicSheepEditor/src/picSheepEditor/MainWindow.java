@@ -147,7 +147,7 @@ public void save()
 	loader.save(fileName, SWT.IMAGE_PNG);
 	drawable.dispose();
 	gc.dispose();
-	
+	mouse= true;
 }
 
 //new image
@@ -181,7 +181,6 @@ public void drawLineImage(Event event,int xg, int xk,int yg , int yk) {
 		    }
 	 });
 	 canvas.redraw();
-	 save();
 	 
 }
 
@@ -493,13 +492,14 @@ public void displayIt(){
 	    
 	    
 	    final Button button = new Button(outerGroup2, SWT.PUSH);
-	    button.setText("Pencil");
+	    button.setText("pencil");
 	    button.setBackground(new Color(255,0,0));
 	    button.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
+				mouse = true;
 				bleistift = !bleistift;
 				if(bleistift)
 					button.setBackground(new Color(0,255,0));
@@ -518,12 +518,13 @@ public void displayIt(){
 });
 	    
 	    final Button buttonViereck = new Button(outerGroup2, SWT.PUSH);
-	    buttonViereck.setText("Square");
+	    buttonViereck.setText("square");
 	    buttonViereck.setBackground(new Color(255,0,0));
 	    buttonViereck.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
+				mouse =  true;
 				System.out.println("square");
 				viereck = !viereck;
 				if(viereck)
@@ -545,6 +546,7 @@ public void displayIt(){
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				mouse =  true;
 				// TODO Auto-generated method stub
 				fviereck = !fviereck;
 				if(fviereck)
@@ -564,7 +566,7 @@ public void displayIt(){
 });
 	    
 	    final Button buttonKreis = new Button(outerGroup2, SWT.PUSH);
-	    buttonKreis.setText("Circle");
+	    buttonKreis.setText("circle");
 	    buttonKreis.setBackground(new Color(255,0,0));
 	    buttonKreis.addSelectionListener(new SelectionListener() {
 
@@ -572,6 +574,7 @@ public void displayIt(){
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("Circle");
+				mouse =  true;
 				kreis = !kreis;
 				if(kreis)
 				{
@@ -589,7 +592,7 @@ public void displayIt(){
 	      });
 	    
 	    final Button buttonFKreis = new Button(outerGroup2, SWT.PUSH);
-	    buttonFKreis.setText("fill Circle");
+	    buttonFKreis.setText("fill circle");
 	    buttonFKreis.setBackground(new Color(255,0,0));
 	    buttonFKreis.addSelectionListener(new SelectionListener() {
 
@@ -597,6 +600,7 @@ public void displayIt(){
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("FCircle");
+				mouse =  true;
 				fkreis = !fkreis;
 				if(fkreis)
 				{
@@ -614,12 +618,13 @@ public void displayIt(){
 	      });
 	    
 	    final Button buttonLine = new Button(outerGroup2, SWT.PUSH);
-	    buttonLine.setText("Line");
+	    buttonLine.setText("line");
 	    buttonLine.setBackground(new Color(255,0,0));
 	    buttonLine.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				mouse =  true;
 				// TODO Auto-generated method stub
 				System.out.println("Circle");
 				line = !line;
@@ -637,12 +642,14 @@ public void displayIt(){
 	    });
 	 
 	    final Button buttonColor = new Button(outerGroup2, SWT.PUSH);
-	    buttonColor.setText("Color");
+	    buttonColor.setText("color");
 	    buttonColor.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
+				
+				mouse =  true;
 				save();
    		    	ColorDialog dlg = new ColorDialog(shell);
 			    dlg.setRGB(new RGB(0, 0, 255));
