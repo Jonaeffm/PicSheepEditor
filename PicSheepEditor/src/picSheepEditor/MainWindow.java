@@ -649,7 +649,7 @@ public void displayIt(){
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 				
-				mouse =  true;
+				
 				save();
    		    	ColorDialog dlg = new ColorDialog(shell);
 			    dlg.setRGB(new RGB(0, 0, 255));
@@ -663,6 +663,7 @@ public void displayIt(){
 			    }
 			    Image image = new Image(display,fileName);
    		    	drawImage(image);
+   		    	mouse =  true;
 			}
 
 			@Override
