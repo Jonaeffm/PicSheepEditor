@@ -1,2 +1,2 @@
 # PicSheepEditor
-picture editor
+picture manipulation program
