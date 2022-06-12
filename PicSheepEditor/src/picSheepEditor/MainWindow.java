@@ -226,6 +226,7 @@ public void drawCircleImage(Event event,int xg, int xk,int yg , int yk) {
 
 }
 
+//draw filled circle
 public void drawFCircleImage(Event event,int xg, int xk,int yg , int yk) {
 	 canvas.addPaintListener(new PaintListener() { 
 		    public void paintControl(PaintEvent e) { 
@@ -292,7 +293,7 @@ public void displayIt(){
 	    canvas = new Canvas(scrolledComposite,SWT.NONE);
 	    canvas.setSize(ps.getX(), ps.getY());
 	    
-	    //SWT Objects
+	    //SWT objects
 	    scrolledComposite.setContent(canvas);
 	    shell.addListener( SWT.Resize, event -> {
 	    	System.out.println("resize");
